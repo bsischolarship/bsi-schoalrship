@@ -1,0 +1,14 @@
+[
+  {
+    "nim": "2023012345",
+    "nama": "Agus Hermawan",
+    "kampus": "BSI Jakarta",
+    "email": "agus@example.com"
+  },
+  {
+    "nim": "2023019876",
+    "nama": "Dewi Sartika",
+    "kampus": "BSI Bandung",
+    "email": "dewi@example.com"
+  }
+]

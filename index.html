@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BSI Scholarship</title>
+    <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+    <header class="header">
+        <div class="brand">
+            <div class="logo-circle">BSI</div>
+            <div class="brand-text">
+                <div class="brand-title">BSI Scholarship</div>
+                <div class="brand-subtitle">Scholarship Application Portal</div>
+            </div>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-link active">Home</a>
+            <a href="cek.html" class="nav-link">Cek Mahasiswa</a>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="hero">
+            <h1>Selamat datang di portal <span class="highlight">BSI Scholarship</span></h1>
+            <p class="hero-text">
+                Mahasiswa cukup memasukkan Nomor Induk sekali, lalu sistem akan
+                mengarahkan ke Google Form beasiswa dengan data sudah terisi otomatis:
+                <strong>NIM, Nama, Kampus, dan Email</strong>.
+            </p>
+            <div class="hero-actions">
+                <a href="cek.html" class="btn btn-primary">Mulai Cek Mahasiswa</a>
+            </div>
+        </section>
+
+        <section class="info-grid">
+            <div class="card">
+                <h2>Tanpa Login &amp; Tanpa Server</h2>
+                <p>
+                    Portal ini berjalan sebagai website statis di GitHub Pages. Semua data
+                    mahasiswa dan konfigurasi form tersimpan dalam file JSON yang
+                    mudah diupdate.
+                </p>
+            </div>
+            <div class="card">
+                <h2>Prefill Google Form</h2>
+                <p>
+                    Setelah NIM tervalidasi, mahasiswa langsung diarahkan ke Google Form
+                    dengan field utama yang sudah otomatis terisi.
+                </p>
+            </div>
+            <div class="card">
+                <h2>Mudah Dikelola</h2>
+                <p>
+                    Administrator hanya perlu mengupdate dua file:
+                    <code>data/mahasiswa.json</code> untuk data mahasiswa dan
+                    <code>config/form.json</code> untuk pengaturan Google Form.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <span>&copy; {year} BSI Scholarship — Static Portal on GitHub Pages.</span>
+    </footer>
+</body>
+</html>

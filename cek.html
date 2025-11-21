@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cek Mahasiswa — BSI Scholarship</title>
+    <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body onload="initCekPage()">
+    <header class="header">
+        <div class="brand">
+            <div class="logo-circle">BSI</div>
+            <div class="brand-text">
+                <div class="brand-title">BSI Scholarship</div>
+                <div class="brand-subtitle">Cek &amp; Prefill Form</div>
+            </div>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="cek.html" class="nav-link active">Cek Mahasiswa</a>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="card card-wide">
+            <h1>Cek Data Mahasiswa</h1>
+            <p class="hero-text">
+                Masukkan Nomor Induk Mahasiswa (NIM) untuk memvalidasi data dan
+                mendapatkan link Google Form yang sudah terisi otomatis.
+            </p>
+
+            <form class="cek-form" onsubmit="return handleCek(event)">
+                <label for="nim">Nomor Induk Mahasiswa (NIM)</label>
+                <input
+                    type="text"
+                    id="nim"
+                    name="nim"
+                    placeholder="Contoh: 2023012345"
+                    required
+                />
+                <button type="submit" class="btn btn-primary">Cek &amp; Buat Link Form</button>
+            </form>
+
+            <div id="cek-result" class="cek-result"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <span>&copy; 2025 BSI Scholarship — NIM Validation &amp; GForm Prefill.</span>
+    </footer>
+
+    <script src="scripts/main.js"></script>
+</body>
+</html>
