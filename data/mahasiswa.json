@@ -1,14 +1,14 @@
 [
   {
-    "nim": "2023012345",
-    "nama": "Agus Hermawan",
+    "nim": "I2400001",
+    "nama": "Sharia Young Leader 1",
     "kampus": "BSI Jakarta",
-    "email": "agus@example.com"
+    "email": "syll@example.com"
   },
   {
-    "nim": "2023019876",
-    "nama": "Dewi Sartika",
+    "nim": "P2400002",
+    "nama": "Sharia Young Leader 2",
     "kampus": "BSI Bandung",
-    "email": "dewi@example.com"
+    "email": "syl2@example.com"
   }
 ]

@@ -3,66 +3,82 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BSI Scholarship</title>
+    <title>Home — BSI Scholarship Hub</title>
     <link rel="stylesheet" href="assets/style.css" />
 </head>
-<body>
-    <header class="header">
-        <div class="brand">
-            <div class="logo-circle">BSI</div>
-            <div class="brand-text">
-                <div class="brand-title">BSI Scholarship</div>
-                <div class="brand-subtitle">Scholarship Application Portal</div>
-            </div>
-        </div>
-        <nav class="nav">
-            <a href="index.html" class="nav-link active">Home</a>
-            <a href="cek.html" class="nav-link">Cek Mahasiswa</a>
-        </nav>
-    </header>
+<body data-page="home">
 
-    <main class="main">
-        <section class="hero">
-            <h1>Selamat datang di portal <span class="highlight">BSI Scholarship</span></h1>
-            <p class="hero-text">
-                Mahasiswa cukup memasukkan Nomor Induk sekali, lalu sistem akan
-                mengarahkan ke Google Form beasiswa dengan data sudah terisi otomatis:
-                <strong>NIM, Nama, Kampus, dan Email</strong>.
+<header class="topbar">
+    <div class="topbar-inner">
+        <a href="index.html" class="logo">
+            <div class="logo-mark">🎓</div>
+            <div class="logo-text">
+                <span class="logo-text-main">BSI Scholarship</span>
+                <span class="logo-text-sub">Sharia Young Leader</span>
+            </div>
+        </a>
+        <nav class="nav">
+            <a href="index.html" class="nav-link nav-link--active">Home</a>
+            <a href="list-form.html" class="nav-link">List Form</a>
+            <a href="rekap.html" class="nav-link">Rekap Aktivitas</a>
+            <a href="ganti-nomor.html" class="nav-link">Ganti Nomor</a>
+        </nav>
+    </div>
+</header>
+
+    <main class="page">
+        <section class="hero hero--center">
+            <div class="hero-badge">Hi, Sharia Young Leader! ✨</div>
+            <h1 class="hero-title">Mau apa kamu hari ini?</h1>
+            <p class="hero-subtitle">
+                Pilih aktivitas yang ingin kamu lakukan. Akses portal resmi, cek form,
+                dan isi laporan aktivitas dengan alur yang simpel dan rapi.
             </p>
             <div class="hero-actions">
-                <a href="cek.html" class="btn btn-primary">Mulai Cek Mahasiswa</a>
+                <a href="list-form.html" class="btn btn-primary">Lihat Semua Form</a>
+                <a href="#quick-actions" class="btn btn-ghost">Aksi Cepat</a>
             </div>
         </section>
 
-        <section class="info-grid">
-            <div class="card">
-                <h2>Tanpa Login &amp; Tanpa Server</h2>
-                <p>
-                    Portal ini berjalan sebagai website statis di GitHub Pages. Semua data
-                    mahasiswa dan konfigurasi form tersimpan dalam file JSON yang
-                    mudah diupdate.
+        <section id="quick-actions" class="card-grid card-grid--3">
+            <a href="https://inspirasi.bsischolarhub.id/" target="_blank" rel="noopener" class="card card--action">
+                <div class="card-icon card-icon--purple">✨</div>
+                <h2 class="card-title">Akses Portal BSI Inspirasi</h2>
+                <p class="card-text">
+                    Masuk ke portal BSI Inspirasi untuk melihat jadwal, materi,
+                    dan informasi pembinaan terbaru.
                 </p>
-            </div>
-            <div class="card">
-                <h2>Prefill Google Form</h2>
-                <p>
-                    Setelah NIM tervalidasi, mahasiswa langsung diarahkan ke Google Form
-                    dengan field utama yang sudah otomatis terisi.
+                <span class="card-link">Buka Portal Inspirasi →</span>
+            </a>
+
+            <a href="https://prestasi.bsischolarhub.id/" target="_blank" rel="noopener" class="card card--action">
+                <div class="card-icon card-icon--gold">⭐</div>
+                <h2 class="card-title">Akses Portal BSI Prestasi</h2>
+                <p class="card-text">
+                    Kelola data prestasi dan aktivitas kamu sebagai Sharia Young Leader
+                    di portal BSI Prestasi.
                 </p>
-            </div>
-            <div class="card">
-                <h2>Mudah Dikelola</h2>
-                <p>
-                    Administrator hanya perlu mengupdate dua file:
-                    <code>data/mahasiswa.json</code> untuk data mahasiswa dan
-                    <code>config/form.json</code> untuk pengaturan Google Form.
+                <span class="card-link">Buka Portal Prestasi →</span>
+            </a>
+
+            <a href="list-form.html" class="card card--action">
+                <div class="card-icon card-icon--blue">📝</div>
+                <h2 class="card-title">Mengisi Form</h2>
+                <p class="card-text">
+                    Lihat daftar form yang tersedia, mulai dari kehadiran pembinaan,
+                    tugas pengganti, sampai evaluasi.
                 </p>
-            </div>
+                <span class="card-link">Lihat List Form →</span>
+            </a>
         </section>
     </main>
 
-    <footer class="footer">
-        <span>&copy; {year} BSI Scholarship — Static Portal on GitHub Pages.</span>
-    </footer>
+<footer class="footer">
+    <div class="footer-inner">
+        <span>&copy; 2025 BSI Scholarship Hub. Built as a static site on GitHub Pages.</span>
+    </div>
+</footer>
+
+    <script src="scripts/main.js"></script>
 </body>
 </html>
