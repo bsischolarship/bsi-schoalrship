@@ -1,3 +1,26 @@
+/* =========================================================
+   SUPABASE CONFIG
+========================================================= */
+
+const SUPABASE_URL = "https://iyfwaqwmnmjfagszttts.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5ZndhcXdtbm1qZmFnc3p0dHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NTEwMTgsImV4cCI6MjA4MzQyNzAxOH0.f2xb_aQDIj4tIPKwTTC9dgIi-9qFv0G252T5uo9XwXo";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+/* =========================================================
+   GLOBAL STATE
+========================================================= */
+
+let mahasiswaData = null;
+let formsConfig = null;
+
+/* =========================================================
+   LOAD JSON HELPER
+========================================================= */
+
 async function loadJson(path) {
     const res = await fetch(path);
     if (!res.ok) {
@@ -6,17 +29,35 @@ async function loadJson(path) {
     return await res.json();
 }
 
-let mahasiswaData = null;
-let formsConfig = null;
+/* =========================================================
+   LOAD DATA FROM SUPABASE
+========================================================= */
 
 async function ensureDataLoaded() {
-    if (!mahasiswaData) {
-        mahasiswaData = await loadJson("data/mahasiswa.json");
+    if (mahasiswaData) return;
+
+    const { data, error } = await supabaseClient
+        .from("mahasiswa_bsi")
+        .select("no_induk, nama, kampus, kelompok, status");
+
+    console.log("SUPABASE DATA:", data);
+    console.log("SUPABASE ERROR:", error);
+
+    if (error) {
+        throw error;
     }
-    if (!formsConfig) {
-        formsConfig = await loadJson("config/forms.json");
-    }
+
+    mahasiswaData = (data || []).map((m) => ({
+        nim: String(m.no_induk || "").trim(),
+        nama: m.nama || "",
+        kampus: m.kampus || "",
+        kelompok: m.kelompok || ""
+    }));
 }
+
+/* =========================================================
+   BANNER MONTH
+========================================================= */
 
 function setBannerMonthIfExists() {
     const el = document.getElementById("alert-month");
@@ -24,35 +65,28 @@ function setBannerMonthIfExists() {
 
     const now = new Date();
     const monthNames = [
-        "Januari",
-        "Februari",
-        "Maret",
-        "April",
-        "Mei",
-        "Juni",
-        "Juli",
-        "Agustus",
-        "September",
-        "Oktober",
-        "November",
-        "Desember"
+        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
     ];
-    const monthLabel = monthNames[now.getMonth()];
-    const year = now.getFullYear();
-    el.textContent = ` (Periode bulan ${monthLabel} ${year})`;
+    el.textContent = ` (Periode bulan ${monthNames[now.getMonth()]} ${now.getFullYear()})`;
 }
 
+/* =========================================================
+   INIT FORM PAGE
+========================================================= */
+
 async function initFormPage(slug) {
+    const resultEl = document.getElementById("cek-result");
+
     try {
         await ensureDataLoaded();
     } catch (err) {
         console.error(err);
-        const resultEl = document.getElementById("cek-result");
         if (resultEl) {
             resultEl.innerHTML = `
                 <div class="error-box">
-                    Terjadi kesalahan saat memuat data awal. Silakan coba refresh halaman
-                    atau hubungi admin jika masalah berlanjut.
+                    Terjadi kesalahan saat memuat data awal.
+                    Silakan refresh halaman atau hubungi admin.
                 </div>
             `;
         }
@@ -60,22 +94,25 @@ async function initFormPage(slug) {
     }
 
     setBannerMonthIfExists();
-    const cfg = formsConfig[slug];
-    if (!cfg) {
-        const resultEl = document.getElementById("cek-result");
+
+    if (!formsConfig || !formsConfig[slug]) {
         if (resultEl) {
             resultEl.innerHTML = `
                 <div class="error-box">
                     Konfigurasi form untuk halaman ini belum tersedia.
-                    Pastikan <code>config/forms.json</code> sudah diisi untuk slug: <strong>${slug}</strong>.
                 </div>
             `;
         }
     }
 }
 
+/* =========================================================
+   HANDLE FORM SUBMIT
+========================================================= */
+
 async function handleFormSubmit(event) {
     event.preventDefault();
+
     const body = document.body;
     const slug = body.dataset.formSlug;
     const nimInput = document.getElementById("nim");
@@ -84,6 +121,7 @@ async function handleFormSubmit(event) {
     if (!nimInput || !resultEl) return false;
 
     const nim = (nimInput.value || "").trim();
+
     if (!nim) {
         resultEl.innerHTML = `
             <div class="error-box">
@@ -93,60 +131,84 @@ async function handleFormSubmit(event) {
         return false;
     }
 
+    /* ---- LOAD DATA ---- */
     try {
         await ensureDataLoaded();
     } catch (err) {
         console.error(err);
         resultEl.innerHTML = `
             <div class="error-box">
-                Terjadi kesalahan saat memuat data. Coba muat ulang halaman.
+                Gagal memuat data mahasiswa.
+                Silakan coba lagi atau hubungi admin.
             </div>
         `;
         return false;
     }
 
-    const found = (mahasiswaData || []).find((m) => String(m.nim) === nim);
+    if (!Array.isArray(mahasiswaData) || mahasiswaData.length === 0) {
+        resultEl.innerHTML = `
+            <div class="error-box">
+                Data mahasiswa belum tersedia atau belum tersinkron.
+            </div>
+        `;
+        return false;
+    }
+
+    /* ---- FIND DATA ---- */
+    const found = mahasiswaData.find(
+        (m) =>
+            m.nim.toUpperCase() === nim.toUpperCase()
+    );
+
     if (!found) {
         resultEl.innerHTML = `
             <div class="error-box">
-                NIM <strong>${nim}</strong> tidak ditemukan di database.
-                Pastikan NIM sudah benar atau hubungi admin program.
+                No Induk <strong>${nim}</strong> tidak ditemukan.
+                Pastikan data sudah benar atau hubungi admin.
             </div>
         `;
         return false;
     }
 
+    /* ---- FORM CONFIG ---- */
     const cfg = formsConfig && formsConfig[slug];
     if (!cfg || !cfg.form_url || !cfg.prefill) {
         resultEl.innerHTML = `
             <div class="error-box">
-                Konfigurasi form untuk halaman ini belum lengkap.
-                Cek kembali file <code>config/forms.json</code>.
+                Konfigurasi form belum lengkap.
             </div>
         `;
         return false;
     }
 
-    const fields = cfg.prefill;
+    /* ---- BUILD PREFILL URL ---- */
     const params = new URLSearchParams();
-    if (fields.nim) params.set(fields.nim, found.nim || "");
-    if (fields.nama) params.set(fields.nama, found.nama || "");
-    if (fields.kampus) params.set(fields.kampus, found.kampus || "");
-    if (fields.email) params.set(fields.email, found.email || "");
+    if (cfg.prefill.nim) params.set(cfg.prefill.nim, found.nim);
+    if (cfg.prefill.nama) params.set(cfg.prefill.nama, found.nama);
+    if (cfg.prefill.kampus) params.set(cfg.prefill.kampus, found.kampus);
+    if (cfg.prefill.kelompok) params.set(cfg.prefill.kelompok, found.kelompok);
 
-    const baseUrl = cfg.form_url;
-    const finalUrl =
-        baseUrl.includes("?") ? `${baseUrl}&${params.toString()}` : `${baseUrl}?${params.toString()}`;
+    const finalUrl = cfg.form_url.includes("?")
+        ? `${cfg.form_url}&${params.toString()}`
+        : `${cfg.form_url}?${params.toString()}`;
 
+    /* ---- RESULT UI ---- */
     resultEl.innerHTML = `
         <div class="result-card">
             <p><strong>Data ditemukan:</strong></p>
-            <p>NIM: <strong>${found.nim}</strong></p>
-            <p>Nama: <strong>${found.nama || "-"}</strong></p>
-            <p>Kampus: <strong>${found.kampus || "-"}</strong></p>
-            <p>Email: <strong>${found.email || "-"}</strong></p>
+
+            <div class="result-table">
+                <div class="label">No Induk</div><div class="colon">:</div><div class="value">${found.nim}</div>
+                <div class="label">Nama</div><div class="colon">:</div><div class="value value--bold">${found.nama || "-"}</div>
+                <div class="label">Kampus</div><div class="colon">:</div><div class="value">${found.kampus || "-"}</div>
+                <div class="label">Kelompok</div><div class="colon">:</div><div class="value">${found.kelompok || "-"}</div>
+            </div>
+
             <br/>
-            <a class="btn btn-primary btn-full" href="${finalUrl}" target="_blank" rel="noopener">
+            <a class="btn btn-primary btn-full"
+               href="${finalUrl}"
+               target="_blank"
+               rel="noopener">
                 Buka Google Form &amp; Lanjutkan →
             </a>
         </div>
@@ -155,13 +217,20 @@ async function handleFormSubmit(event) {
     return false;
 }
 
+/* =========================================================
+   CHANGE NUMBER PAGE
+========================================================= */
+
 async function handleChangeNumber(event) {
     event.preventDefault();
+
     const nimInput = document.getElementById("nim-change");
     const resultEl = document.getElementById("change-number-result");
+
     if (!nimInput || !resultEl) return false;
 
     const nim = (nimInput.value || "").trim();
+
     if (!nim) {
         resultEl.innerHTML = `
             <div class="error-box">
@@ -177,18 +246,20 @@ async function handleChangeNumber(event) {
         console.error(err);
         resultEl.innerHTML = `
             <div class="error-box">
-                Terjadi kesalahan saat memuat data. Coba muat ulang halaman.
+                Gagal memuat data mahasiswa.
             </div>
         `;
         return false;
     }
 
-    const found = (mahasiswaData || []).find((m) => String(m.nim) === nim);
+    const found = mahasiswaData.find(
+        (m) => m.nim.toUpperCase() === nim.toUpperCase()
+    );
+
     if (!found) {
         resultEl.innerHTML = `
             <div class="error-box">
-                NIM <strong>${nim}</strong> tidak ditemukan di database.
-                Pastikan NIM sudah benar atau hubungi admin program.
+                No Induk <strong>${nim}</strong> tidak ditemukan.
             </div>
         `;
         return false;
@@ -199,29 +270,28 @@ async function handleChangeNumber(event) {
         resultEl.innerHTML = `
             <div class="error-box">
                 Konfigurasi form ganti nomor belum lengkap.
-                Cek kembali file <code>config/forms.json</code> untuk slug "ganti-nomor".
             </div>
         `;
         return false;
     }
 
-    const fields = cfg.prefill;
     const params = new URLSearchParams();
-    if (fields.nim) params.set(fields.nim, found.nim || "");
-    if (fields.nama) params.set(fields.nama, found.nama || "");
-    if (fields.kampus) params.set(fields.kampus, found.kampus || "");
-    if (fields.email) params.set(fields.email, found.email || "");
+    if (cfg.prefill.nim) params.set(cfg.prefill.nim, found.nim);
+    if (cfg.prefill.nama) params.set(cfg.prefill.nama, found.nama);
+    if (cfg.prefill.kampus) params.set(cfg.prefill.kampus, found.kampus);
+    if (cfg.prefill.kelompok) params.set(cfg.prefill.kelompok, found.kelompok);
 
-    const baseUrl = cfg.form_url;
-    const finalUrl =
-        baseUrl.includes("?") ? `${baseUrl}&${params.toString()}` : `${baseUrl}?${params.toString()}`;
+    const finalUrl = cfg.form_url.includes("?")
+        ? `${cfg.form_url}&${params.toString()}`
+        : `${cfg.form_url}?${params.toString()}`;
 
     resultEl.innerHTML = `
         <div class="result-card">
-            <p>Data ditemukan untuk NIM <strong>${found.nim}</strong>.</p>
-            <p>Kamu akan diarahkan ke form ganti nomor.</p>
-            <br/>
-            <a class="btn btn-primary btn-full" href="${finalUrl}" target="_blank" rel="noopener">
+            <p>Data ditemukan.</p>
+            <a class="btn btn-primary btn-full"
+               href="${finalUrl}"
+               target="_blank"
+               rel="noopener">
                 Buka Form Ganti Nomor →
             </a>
         </div>
@@ -230,21 +300,41 @@ async function handleChangeNumber(event) {
     return false;
 }
 
-function initPage() {
+/* =========================================================
+   PAGE INIT
+========================================================= */
+
+async function initPage() {
     const body = document.body;
     const page = body.dataset.page;
 
+    try {
+        formsConfig = await loadJson("config/forms.json");
+    } catch (err) {
+        console.error("Gagal load forms.json", err);
+    }
+
     if (page === "form") {
         const slug = body.dataset.formSlug;
-        if (slug) {
-            initFormPage(slug);
-        }
-    } else if (page === "ganti-nomor") {
-        ensureDataLoaded().catch((err) => console.error(err));
+        if (slug) initFormPage(slug);
     }
 }
+
+/* =========================================================
+   NAV
+========================================================= */
+
+function toggleNav() {
+    const nav = document.getElementById("mobileNav");
+    if (nav) nav.classList.toggle("nav--open");
+}
+
+/* =========================================================
+   EXPORT
+========================================================= */
 
 document.addEventListener("DOMContentLoaded", initPage);
 
 window.handleFormSubmit = handleFormSubmit;
 window.handleChangeNumber = handleChangeNumber;
+window.toggleNav = toggleNav;
