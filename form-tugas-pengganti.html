@@ -17,9 +17,13 @@
                 <span class="logo-text-sub">Sharia Young Leader</span>
             </div>
         </a>
-        <nav class="nav">
+        <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav()">
+            ☰
+        </button>
+
+        <nav class="nav" id="mobileNav">
             <a href="index.html" class="nav-link">Home</a>
-            <a href="list-form.html" class="nav-link nav-link--active">List Form</a>
+            <a href="list-form.html" class="nav-link nav-link nav-link--active">List Form</a>
             <a href="rekap.html" class="nav-link">Rekap Aktivitas</a>
             <a href="ganti-nomor.html" class="nav-link">Ganti Nomor</a>
         </nav>
@@ -99,7 +103,7 @@
         <span>&copy; 2025 BSI Scholarship Hub. Built as a static site on GitHub Pages.</span>
     </div>
 </footer>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="scripts/main.js"></script>
 </body>
 </html>
