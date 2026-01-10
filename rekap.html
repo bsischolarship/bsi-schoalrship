@@ -66,9 +66,12 @@
   <!-- FILTER -->
   <section class="card">
     <div class="filter-grid">
-      <input id="fNoInduk" placeholder="No Induk" />
-      <input id="fNama" placeholder="Nama" />
-      <input id="fKampus" placeholder="Kampus" />
+    <input id="fNoInduk" list="listNoInduk" placeholder="No Induk" />
+    <input id="fNama" list="listNama" placeholder="Nama" />
+    <input id="fKampus" list="listKampus" placeholder="Kampus" />
+    <datalist id="listNoInduk"></datalist>
+    <datalist id="listNama"></datalist>
+    <datalist id="listKampus"></datalist>
       <select id="fPeriode">
         <option value="">Semua Periode</option>
       </select>
@@ -251,13 +254,36 @@ async function loadAllRows() {
   return all;
 }
 
+function fillDropdowns(rows) {
+  const uniq = (arr) => [...new Set(arr)].sort();
+
+  const noIndukList = uniq(rows.map(r => r.no_induk));
+  const namaList = uniq(rows.map(r => r.nama));
+  const kampusList = uniq(rows.map(r => r.kampus));
+
+  const setOptions = (id, values) => {
+    const el = document.getElementById(id);
+    el.innerHTML = "";
+    values.forEach(v => {
+      const opt = document.createElement("option");
+      opt.value = v;
+      el.appendChild(opt);
+    });
+  };
+
+  setOptions("listNoInduk", noIndukList);
+  setOptions("listNama", namaList);
+  setOptions("listKampus", kampusList);
+}
+
+
 async function init() {
   rawData = await loadAllRows();
   filteredData = rawData;
 
   [...new Set(rawData.map(r => monthLabel(r.tanggal)))]
     .forEach(p => fPeriode.add(new Option(p, p)));
-
+    fillDropdowns(rawData);
   applyFilter();
 }
 
