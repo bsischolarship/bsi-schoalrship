@@ -735,6 +735,49 @@ a {
     .kpi-orange { background: linear-gradient(135deg,#f59e0b,#b45309); }
     .kpi-indigo { background: linear-gradient(135deg,#4f46e5,#312e81); }
 
+
+/* ===============================
+   KPI – RESPONSIVE OPTIMIZATION
+   =============================== */
+
+    /* tablet */
+    @media (max-width: 900px) {
+    .kpi-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .kpi-box {
+        padding: 14px;
+    }
+
+    .kpi-box strong {
+        font-size: 24px;
+    }
+    }
+
+    /* mobile */
+    @media (max-width: 480px) {
+    .kpi-row {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .kpi-box {
+        padding: 12px 10px;
+        border-radius: 14px;
+        text-align: center;
+    }
+
+    .kpi-box span {
+        font-size: 11px;
+    }
+
+    .kpi-box strong {
+        font-size: 20px;
+        margin-top: 4px;
+    }
+    }
+
     /* ===== FILTER ===== */
     .filter-grid {
       display: grid;
@@ -833,3 +876,114 @@ a {
     text-align: center;
     }
 
+    .card:has(.filter-grid) {
+    margin-bottom: 28px;
+    }
+
+
+    /* ===============================
+   FILTER – RESPONSIVE / MOBILE
+   =============================== */
+
+    /* default (desktop) sudah bagus, kita biarkan */
+    .filter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    }
+
+    /* tablet & mobile */
+    @media (max-width: 768px) {
+    .filter-grid {
+        grid-template-columns: 1fr; /* stack ke bawah */
+    }
+
+    .filter-grid input,
+    .filter-grid select {
+        width: 100%;
+        font-size: 15px;
+        padding: 12px 14px;
+    }
+
+    .filter-grid button {
+        width: 100%;
+        padding: 14px;
+        font-size: 15px;
+        border-radius: 999px;
+    }
+    }
+
+    /* extra small phone */
+    @media (max-width: 420px) {
+    .filter-grid input,
+    .filter-grid select {
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .filter-grid button {
+        padding: 14px;
+        font-weight: 600;
+    }
+    }
+
+
+    /* ===============================
+   TABLE – RESPONSIVE / MOBILE
+   =============================== */
+
+    /* pembungkus tabel */
+    .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    }
+
+    /* default desktop */
+    .rekap-table {
+    width: 100%;
+    border-collapse: collapse;
+    }
+
+    /* tablet & mobile */
+    @media (max-width: 768px) {
+
+    .rekap-table {
+        font-size: 12px;
+        min-width: 900px; /* paksa scroll horizontal */
+    }
+
+    .rekap-table th,
+    .rekap-table td {
+        padding: 6px 8px;
+        white-space: nowrap;
+    }
+
+    /* kolom icon lebih sempit */
+    .rekap-table th:nth-child(5),
+    .rekap-table th:nth-child(6),
+    .rekap-table th:nth-child(7),
+    .rekap-table th:nth-child(8),
+    .rekap-table td:nth-child(5),
+    .rekap-table td:nth-child(6),
+    .rekap-table td:nth-child(7),
+    .rekap-table td:nth-child(8) {
+        width: 60px;
+        text-align: center;
+    }
+    }
+
+    /* extra small phone */
+    @media (max-width: 420px) {
+
+    .rekap-table {
+        font-size: 11px;
+        min-width: 860px;
+    }
+
+    .rekap-table th,
+    .rekap-table td {
+        padding: 5px 6px;
+    }
+    }
