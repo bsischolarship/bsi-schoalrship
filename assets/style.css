@@ -566,7 +566,6 @@ a {
     opacity: 0.92;
 }
 
-
 .btn,
 .btn:hover,
 .btn:focus,
@@ -707,27 +706,130 @@ a {
 }
 
 
-/* ===============================
-   EMBED PORTAL
-================================ */
 
-.page--full {
-    max-width: 95%;
-    padding: 0;
-}
+/* KPI */
+    /* ===== KPI ===== */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .kpi-box {
+      padding: 18px;
+      border-radius: 16px;
+      color: #fff;
+    }
+    .kpi-box span {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+    .kpi-box strong {
+      display: block;
+      font-size: 30px;
+      margin-top: 6px;
+    }
+    .kpi-blue { background: linear-gradient(135deg,#2563eb,#1e40af); }
+    .kpi-green { background: linear-gradient(135deg,#16a34a,#166534); }
+    .kpi-teal { background: linear-gradient(135deg,#0d9488,#134e4a); }
+    .kpi-orange { background: linear-gradient(135deg,#f59e0b,#b45309); }
+    .kpi-indigo { background: linear-gradient(135deg,#4f46e5,#312e81); }
 
-.card--embed {
-    border-radius: 0;
-    padding: 0;
-}
+    /* ===== FILTER ===== */
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr) auto;
+      gap: 10px;
+    }
+    .filter-grid input,
+    .filter-grid select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+    }
+    .btn-reset {
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: none;
+      background: #e5e7eb;
+      cursor: pointer;
+      font-weight: 600;
+    }
 
-.iframe-wrapper {
-    width: 100%;
-    height: calc(100vh - 120px);
-}
+    /* ===== TABLE ===== */
+    .table-wrap { overflow-x: auto; }
 
-.iframe-wrapper iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-}
+    table.rekap-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+    table.rekap-table th {
+      background: #f9fafb;
+      padding: 8px;
+      text-align: left;
+      white-space: nowrap;
+    }
+    table.rekap-table td {
+      padding: 7px 8px;
+      border-top: 1px solid #e5e7eb;
+      white-space: nowrap;
+    }
+    table.rekap-table tr:hover {
+      background: #f8fafc;
+    }
+    .td-bold { font-weight: 600; }
+
+    /* ===== ICON ===== */
+    .icon { font-size: 15px; }
+    .icon-yes { color: #16a34a; }
+    .icon-no { color: #dc2626; }
+
+    /* ===== PAGINATION ===== */
+    .pagination {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .pagination button {
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      background: #fff;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .icon-yes {
+    color: #16a34a;
+    font-size: 16px;
+    }
+
+    .icon-no {
+    color: #dc2626;
+    font-size: 16px;
+    }
+
+    .icon-tp {
+    color: #f59e0b;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    }
+
+    /* rata tengah kolom Pre, Post, Assessment, Mentoring */
+    .rekap-table th:nth-child(5),
+    .rekap-table th:nth-child(6),
+    .rekap-table th:nth-child(7),
+    .rekap-table th:nth-child(8),
+    .rekap-table td:nth-child(5),
+    .rekap-table td:nth-child(6),
+    .rekap-table td:nth-child(7),
+    .rekap-table td:nth-child(8) {
+    text-align: center;
+    }
+
