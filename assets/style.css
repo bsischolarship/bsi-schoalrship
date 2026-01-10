@@ -987,3 +987,86 @@ a {
         padding: 5px 6px;
     }
     }
+
+
+    .input-wrap {
+    position: relative;
+    }
+
+    .suggestion {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    max-height: 220px;
+    overflow-y: auto;
+    display: none;
+    }
+
+    .suggestion div {
+    padding: 10px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    }
+
+    .suggestion div:hover {
+    background: #f1f5f9;
+    }
+
+    /* mobile tap friendly */
+    @media (max-width: 768px) {
+    .suggestion div {
+        padding: 14px;
+        font-size: 15px;
+    }
+    }
+
+    /* pastikan parent TIDAK motong dropdown */
+    .filter-grid,
+    .input-wrap {
+    overflow: visible;
+    }
+
+    /* dropdown suggestion */
+    .suggestion {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.12);
+    z-index: 9999;   /* 🔥 ini kuncinya */
+    max-height: 260px;
+    overflow-y: auto;
+    }
+
+    /* ================= GLOBAL AUTOCOMPLETE ================= */
+    .suggestion-global {
+    position: absolute;
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 12px 30px rgba(0,0,0,.18);
+    z-index: 10000;
+    max-height: 260px;
+    overflow-y: auto;
+    display: none;
+    }
+
+    .suggestion-global div {
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 14px;
+    }
+
+    .suggestion-global div:hover {
+    background: #f1f5f9;
+    }
+
+
