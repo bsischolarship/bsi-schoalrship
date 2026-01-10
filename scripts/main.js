@@ -338,3 +338,73 @@ document.addEventListener("DOMContentLoaded", initPage);
 window.handleFormSubmit = handleFormSubmit;
 window.handleChangeNumber = handleChangeNumber;
 window.toggleNav = toggleNav;
+
+
+/* =========================================================
+   AUTOCOMPLETE NIM / NAMA / KAMPUS
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("nim");
+    const box = document.getElementById("nim-suggestions");
+
+    if (!input || !box) return;
+
+    const norm = v => (v || "").toString().toLowerCase();
+
+    input.addEventListener("input", async () => {
+        const keyword = input.value.trim();
+
+        if (keyword.length < 2) {
+            box.style.display = "none";
+            return;
+        }
+
+        try {
+            await ensureDataLoaded();
+        } catch (e) {
+            console.error("Gagal load data", e);
+            return;
+        }
+
+        if (!Array.isArray(mahasiswaData)) return;
+
+        const key = norm(keyword);
+
+        const results = mahasiswaData
+            .filter(m =>
+                norm(m.nim).includes(key) ||
+                norm(m.nama).includes(key) ||
+                norm(m.kampus).includes(key)
+            )
+            .slice(0, 10);
+
+        if (results.length === 0) {
+            box.style.display = "none";
+            return;
+        }
+
+        box.innerHTML = results.map(m => `
+            <div class="nim-suggestion-item" data-nim="${m.nim}">
+                <strong>${m.nim}</strong>
+                <span>${m.nama || "-"} — ${m.kampus || "-"}</span>
+            </div>
+        `).join("");
+
+        box.style.display = "block";
+    });
+
+    box.addEventListener("click", e => {
+        const item = e.target.closest(".nim-suggestion-item");
+        if (!item) return;
+
+        input.value = item.dataset.nim;
+        box.style.display = "none";
+    });
+
+    document.addEventListener("click", e => {
+        if (!e.target.closest(".nim-field-wrapper")) {
+            box.style.display = "none";
+        }
+    });
+});
