@@ -39,12 +39,13 @@
   </section>
 
   <!-- KPI -->
-  <section class="kpi-row">
+  <section class="kpi-row kpi-6">
     <div class="kpi-box kpi-blue"><span>Total Awardee</span><strong id="kpiTotal">0</strong></div>
     <div class="kpi-box kpi-green"><span>Pre-Test</span><strong id="kpiPre">0%</strong></div>
     <div class="kpi-box kpi-teal"><span>Post-Test</span><strong id="kpiPost">0%</strong></div>
     <div class="kpi-box kpi-orange"><span>Assessment</span><strong id="kpiAssessment">0%</strong></div>
     <div class="kpi-box kpi-indigo"><span>Mentoring</span><strong id="kpiMentoring">0%</strong></div>
+    <div class="kpi-box kpi-purple"><span>Pembinaan</span><strong id="kpiPembinaan">0%</strong></div>
   </section>
 
   <!-- FILTER -->
@@ -53,6 +54,7 @@
       <input id="fNoInduk" placeholder="No Induk" autocomplete="off" />
       <input id="fNama" placeholder="Nama" autocomplete="off" />
       <input id="fKampus" placeholder="Kampus" autocomplete="off" />
+      <input id="fKelompok" placeholder="Kelompok" autocomplete="off" />
 
       <select id="fPeriode">
         <option value="">Semua Periode</option>
@@ -73,11 +75,13 @@
             <th>No Induk</th>
             <th>Nama</th>
             <th>Kampus</th>
+            <th>Kelompok</th>
             <th>Bulan</th>
             <th>Pre Test</th>
             <th>Post Test</th>
             <th>Assessment</th>
             <th>Mentoring</th>
+            <th>Pembinaan</th>
           </tr>
         </thead>
         <tbody id="rekapBody"></tbody>
@@ -99,7 +103,7 @@
   <div class="footer-inner">© 2025 BSI Scholarship Hub</div>
 </footer>
 
-<!-- GLOBAL AUTOCOMPLETE (ANTI TERPOTONG) -->
+<!-- GLOBAL AUTOCOMPLETE -->
 <div id="globalSuggest" class="suggestion-global"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -188,11 +192,14 @@ function renderKPI(rows) {
   const awardee = new Set(rows.map(r => r.no_induk)).size || 0;
   const ok = k => rows.filter(r => r[k] === "✅" || r[k] === "TP").length;
 
+  const totalRows = rows.length || 1;
+
   kpiTotal.textContent = awardee;
-  kpiPre.textContent = Math.round(ok("pre_test") / rows.length * 100 || 0) + "%";
-  kpiPost.textContent = Math.round(ok("post_test") / rows.length * 100 || 0) + "%";
-  kpiAssessment.textContent = Math.round(ok("assessment") / rows.length * 100 || 0) + "%";
-  kpiMentoring.textContent = Math.round(ok("mentoring") / rows.length * 100 || 0) + "%";
+  kpiPre.textContent = Math.round(ok("pre_test") / totalRows * 100) + "%";
+  kpiPost.textContent = Math.round(ok("post_test") / totalRows * 100) + "%";
+  kpiAssessment.textContent = Math.round(ok("assessment") / totalRows * 100) + "%";
+  kpiMentoring.textContent = Math.round(ok("mentoring") / totalRows * 100) + "%";
+  kpiPembinaan.textContent = Math.round(ok("pembinaan") / totalRows * 100) + "%";
 }
 
 /* ================= TABLE ================= */
@@ -208,11 +215,13 @@ function renderTable() {
         <td>${r.no_induk}</td>
         <td class="td-bold">${r.nama}</td>
         <td>${r.kampus}</td>
+        <td>${r.kelompok || "-"}</td>
         <td>${monthLabel(r.tanggal)}</td>
         <td class="td-center">${icon(r.pre_test)}</td>
         <td class="td-center">${icon(r.post_test)}</td>
         <td class="td-center">${icon(r.assessment)}</td>
         <td class="td-center">${icon(r.mentoring)}</td>
+        <td class="td-center">${icon(r.pembinaan)}</td>
       </tr>
     `;
   });
@@ -228,9 +237,10 @@ function applyFilter() {
       (!fNoInduk.value || r.no_induk.includes(fNoInduk.value)) &&
       (!fNama.value || r.nama.toLowerCase().includes(fNama.value.toLowerCase())) &&
       (!fKampus.value || r.kampus.toLowerCase().includes(fKampus.value.toLowerCase())) &&
+      (!fKelompok.value || (r.kelompok || "").toLowerCase().includes(fKelompok.value.toLowerCase())) &&
       (!fPeriode.value || monthLabel(r.tanggal) === fPeriode.value)
     )
-    // 🔽 SORT A–Z BERDASARKAN NAMA
+    // SORT A–Z by Nama
     .sort((a, b) => a.nama.localeCompare(b.nama, "id"));
 
   currentPage = 1;
@@ -242,6 +252,7 @@ function resetFilter() {
   fNoInduk.value = "";
   fNama.value = "";
   fKampus.value = "";
+  fKelompok.value = "";
   fPeriode.value = "";
   applyFilter();
 }
@@ -267,7 +278,7 @@ async function init() {
   while (true) {
     const { data, error } = await supabaseClient
       .from("rekap_bsi")
-      .select("no_induk,nama,kampus,tanggal,pre_test,post_test,assessment,mentoring")
+      .select("no_induk,nama,kampus,kelompok,tanggal,pre_test,post_test,assessment,mentoring,pembinaan")
       .range(from, from + 999);
 
     if (error || !data || !data.length) break;
@@ -282,6 +293,7 @@ async function init() {
   setupSuggest(fNoInduk, [...new Set(all.map(r => r.no_induk))]);
   setupSuggest(fNama, [...new Set(all.map(r => r.nama))]);
   setupSuggest(fKampus, [...new Set(all.map(r => r.kampus))]);
+  setupSuggest(fKelompok, [...new Set(all.map(r => r.kelompok).filter(Boolean))]);
 
   [...new Set(all.map(r => monthLabel(r.tanggal)))]
     .forEach(p => fPeriode.add(new Option(p, p)));
@@ -296,4 +308,3 @@ init();
 
 </body>
 </html>
-
