@@ -865,14 +865,20 @@ a {
     }
 
     /* rata tengah kolom Pre, Post, Assessment, Mentoring */
+    .rekap-table th:nth-child(4),
     .rekap-table th:nth-child(5),
     .rekap-table th:nth-child(6),
     .rekap-table th:nth-child(7),
     .rekap-table th:nth-child(8),
+    .rekap-table th:nth-child(9),
+    .rekap-table th:nth-child(10),
+    .rekap-table td:nth-child(4),
     .rekap-table td:nth-child(5),
     .rekap-table td:nth-child(6),
     .rekap-table td:nth-child(7),
-    .rekap-table td:nth-child(8) {
+    .rekap-table td:nth-child(8),
+    .rekap-table td:nth-child(9),
+    .rekap-table td:nth-child(10) {
     text-align: center;
     }
 
@@ -1061,3 +1067,62 @@ a {
 .center{text-align:center}
 .tp{color:#f59e0b;font-weight:600}
 
+/* ================= KPI GRID FIX ================= */
+.kpi-row.kpi-6 {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kpi-box {
+  border-radius: 18px;
+  padding: 20px 18px;
+  color: #fff;
+  min-height: 96px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.kpi-box span {
+  font-size: 13px;
+  opacity: 0.95;
+}
+
+.kpi-box strong {
+  font-size: 30px;
+  margin-top: 6px;
+  line-height: 1;
+}
+
+/* KPI PEMBINAAN LEBIH KECIL */
+.kpi-box.kpi-small {
+  padding: 14px 14px;
+}
+
+.kpi-box.kpi-small strong {
+  font-size: 22px;
+}
+
+/* ================= COLOR FIX ================= */
+.kpi-purple {
+  background: linear-gradient(135deg, #6a5acd, #3f37c9);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1024px) {
+  .kpi-row.kpi-6 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .kpi-row.kpi-6 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .kpi-box strong {
+    font-size: 24px;
+  }
+}
