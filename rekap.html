@@ -114,6 +114,21 @@ function toggleNav() {
   document.getElementById("mobileNav").classList.toggle("nav-open");
 }
 
+document.addEventListener("click", function (e) {
+  const nav = document.getElementById("mobileNav");
+  const toggle = document.querySelector(".nav-toggle");
+
+  if (!nav.contains(e.target) && !toggle.contains(e.target)) {
+    nav.classList.remove("nav-open");
+  }
+});
+
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 768) {
+    document.getElementById("mobileNav").classList.remove("nav-open");
+  }
+});
+
 /* ================= CONFIG ================= */
 const SUPABASE_URL = "https://iyfwaqwmnmjfagszttts.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5ZndhcXdtbm1qZmFnc3p0dHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc4NTEwMTgsImV4cCI6MjA4MzQyNzAxOH0.f2xb_aQDIj4tIPKwTTC9dgIi-9qFv0G252T5uo9XwXo";
@@ -130,10 +145,19 @@ function monthLabel(d) {
   const M = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
   return `${M[m-1]} ${y}`;
 }
+
 function icon(v) {
-  if (v === "✅") return "✅";
-  if (v === "TP") return "TP";
-  return "❌";
+  const val = String(v).trim();
+
+  if (val === "✅") {
+    return `<td class="td-center cell-yes">✅</td>`;
+  }
+
+  if (val === "TP") {
+    return `<td class="td-center cell-tp">TP</td>`;
+  }
+
+  return `<td class="td-center cell-no">❌</td>`;
 }
 
 /* ================= AUTOCOMPLETE ================= */
@@ -210,20 +234,20 @@ function renderTable() {
   const rows = filteredData.slice(start, start + PAGE_SIZE);
 
   rows.forEach(r => {
-    rekapBody.innerHTML += `
-      <tr>
-        <td>${r.no_induk}</td>
-        <td class="td-bold">${r.nama}</td>
-        <td>${r.kampus}</td>
-        <td>${r.kelompok || "-"}</td>
-        <td>${monthLabel(r.tanggal)}</td>
-        <td class="td-center">${icon(r.pre_test)}</td>
-        <td class="td-center">${icon(r.post_test)}</td>
-        <td class="td-center">${icon(r.assessment)}</td>
-        <td class="td-center">${icon(r.mentoring)}</td>
-        <td class="td-center">${icon(r.pembinaan)}</td>
-      </tr>
-    `;
+        rekapBody.innerHTML += `
+        <tr>
+            <td>${r.no_induk}</td>
+            <td class="td-bold">${r.nama}</td>
+            <td>${r.kampus}</td>
+            <td>${r.kelompok}</td>
+            <td>${monthLabel(r.tanggal)}</td>
+            ${icon(r.pre_test)}
+            ${icon(r.post_test)}
+            ${icon(r.assessment)}
+            ${icon(r.pembinaan)}
+            ${icon(r.mentoring)}
+        </tr>
+        `;
   });
 
   pageInfo.textContent =
