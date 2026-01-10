@@ -5,7 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lupa Mengisi Daftar Hadir — BSI Scholarship Hub</title>
     <link rel="stylesheet" href="assets/style.css" />
+
+    <!-- === AUTOCOMPLETE DROPDOWN STYLE (LOCAL, AMAN) === -->
+    <style>
+        .nim-field-wrapper {
+            position: relative;
+        }
+
+        .nim-suggestion-box {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            max-height: 260px;
+            overflow-y: auto;
+            z-index: 9999;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+            display: none;
+        }
+
+        .nim-suggestion-item {
+            padding: 12px 14px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: background 0.15s ease;
+        }
+
+        .nim-suggestion-item + .nim-suggestion-item {
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .nim-suggestion-item:hover {
+            background: #f4fbfa;
+        }
+
+        .nim-suggestion-item strong {
+            font-size: 14px;
+            font-weight: 600;
+            color: #00a79d;
+            letter-spacing: 0.3px;
+        }
+
+        .nim-suggestion-item span {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.3;
+        }
+    </style>
 </head>
+
 <body data-page="form" data-form-slug="missed">
 
 <header class="topbar">
@@ -17,9 +70,7 @@
                 <span class="logo-text-sub">Sharia Young Leader</span>
             </div>
         </a>
-        <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav()">
-            ☰
-        </button>
+        <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav()">☰</button>
 
         <nav class="nav" id="mobileNav">
             <a href="index.html" class="nav-link">Home</a>
@@ -30,80 +81,123 @@
     </div>
 </header>
 
-    <main class="page page--split">
-        <section class="split-left card card--guide">
-            <div class="pill pill--orange">Contoh Bukti yang VALID</div>
-            <h1 class="card-title card-title--big">📅 Lupa Mengisi Daftar Hadir</h1>
-            <p class="card-text">
-                Perhatikan contoh bukti dan panduan singkat di bawah ini agar data
-                yang kamu kirimkan tercatat dengan benar.
+<main class="page page--split">
+    <section class="split-left card card--guide">
+        <div class="pill pill--orange">Contoh Bukti yang VALID</div>
+        <h1 class="card-title card-title--big">📅 Lupa Mengisi Daftar Hadir</h1>
+        <p class="card-text">
+            Perhatikan contoh bukti dan panduan singkat di bawah ini agar data
+            yang kamu kirimkan tercatat dengan benar.
+        </p>
+        <ul class="list">
+            <li>Foto atau bukti menunjukkan kehadiran / aktivitas dengan jelas.</li>
+            <li>Tanggal dan waktu terlihat jika relevan.</li>
+            <li>Isi form maksimal 3 hari setelah jadwal pembinaan (jika berlaku).</li>
+            <li>Simpan bukti submit email Google Form untuk arsip pribadi.</li>
+        </ul>
+        <div class="guide-placeholder">
+            <span class="guide-placeholder-label">Area contoh bukti</span>
+            <p>
+                Di sini kamu bisa menambahkan gambar contoh bukti (screenshot email,
+                laporan mentor, dsb). Untuk saat ini masih berupa placeholder statis.
             </p>
-            <ul class="list">
-                <li>Foto atau bukti menunjukkan kehadiran / aktivitas dengan jelas.</li>
-                <li>Tanggal dan waktu terlihat jika relevan.</li>
-                <li>Isi form maksimal 3 hari setelah jadwal pembinaan (jika berlaku).</li>
-                <li>Simpan bukti submit email Google Form untuk arsip pribadi.</li>
-            </ul>
-            <div class="guide-placeholder">
-                <span class="guide-placeholder-label">Area contoh bukti</span>
-                <p>
-                    Di sini kamu bisa menambahkan gambar contoh bukti (screenshot email,
-                    laporan mentor, dsb). Untuk saat ini masih berupa placeholder statis.
-                </p>
-            </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="split-right card card--form-panel">
-            <div class="alert alert--warning" id="form-banner">
-                <strong>Perhatian.</strong>
-                <span>Kamu akan mengisi form lupa mengisi daftar hadir pembinaan. Pastikan data yang diunggah valid dan lengkap.</span>
-                <span class="alert-month" id="alert-month"></span>
-            </div>
+    <section class="split-right card card--form-panel">
+        <div class="alert alert--warning" id="form-banner">
+            <strong>Perhatian.</strong>
+            <span>
+                Kamu akan mengisi form lupa mengisi daftar hadir pembinaan.
+                Pastikan data yang diunggah valid dan lengkap.
+            </span>
+            <span class="alert-month" id="alert-month"></span>
+        </div>
 
-            <form class="nim-form" onsubmit="return handleFormSubmit(event)">
-                <label for="nim" class="nim-label">Masukkan Nomor Induk</label>
-                <p class="nim-info">
-                    Nomor induk dapat dilihat di portal
-                    <a href="https://inspirasi.bsischolarhub.id/" target="_blank" rel="noopener">Inspirasi</a>
-                    atau
-                    <a href="https://prestasi.bsischolarhub.id/" target="_blank" rel="noopener">Prestasi</a>.
-                </p>
+        <form class="nim-form" onsubmit="return handleFormSubmit(event)">
+            <label for="nim" class="nim-label">Masukkan Nomor Induk</label>
+            <p class="nim-info">
+                Nomor induk dapat dilihat di portal
+                <a href="https://inspirasi.bsischolarhub.id/" target="_blank" rel="noopener">Inspirasi</a>
+                atau
+                <a href="https://prestasi.bsischolarhub.id/" target="_blank" rel="noopener">Prestasi</a>.
+            </p>
+
+            <!-- === INPUT + AUTOCOMPLETE === -->
+            <div class="nim-field-wrapper">
                 <input
                     id="nim"
                     name="nim"
                     type="text"
                     class="nim-input"
-                    placeholder="I24XXXXX atau P24XXXXX"
+                    placeholder="No Induk / Nama / Kampus"
+                    autocomplete="off"
                     required
                 />
-                <p class="nim-hint">
-                    Format: I24xxxxx (Inspirasi) atau P24xxxxx (Prestasi).
-                    Pastikan nomor induk benar sebelum lanjut.
-                </p>
-                <button type="submit" class="btn btn-primary btn-full">
-                    Lanjutkan →
-                </button>
-            </form>
-
-            <div id="cek-result" class="cek-result"></div>
-
-            <div class="tips-box">
-                <h3 class="tips-title">Tips Penting</h3>
-                <ul class="list">
-                    <li>Pastikan data yang diisi sama dengan di portal resmi.</li>
-                    <li>Gunakan email dan nomor WhatsApp yang aktif.</li>
-                    <li>Jika terjadi error, coba refresh halaman atau hubungi admin.</li>
-                </ul>
+                <div id="nim-suggestions" class="nim-suggestion-box"></div>
             </div>
-        </section>
-    </main>
+
+            <p class="nim-hint">
+                Format: I24xxxxx (Inspirasi) atau P24xxxxx (Prestasi).
+                Pastikan nomor induk benar sebelum lanjut.
+            </p>
+
+            <button type="submit" class="btn btn-primary btn-full">
+                Lanjutkan →
+            </button>
+        </form>
+
+        <div id="cek-result" class="cek-result"></div>
+
+        <div class="tips-box">
+            <h3 class="tips-title">Tips Penting</h3>
+            <ul class="list">
+                <li>Pastikan data yang diisi sama dengan di portal resmi.</li>
+                <li>Gunakan email dan nomor WhatsApp yang aktif.</li>
+                <li>Jika terjadi error, coba refresh halaman atau hubungi admin.</li>
+            </ul>
+        </div>
+    </section>
+</main>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-bottom-nav">
+    <a href="index.html" class="mb-item">
+        <svg viewBox="0 0 24 24" class="mb-icon">
+            <path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-10.5z"/>
+        </svg>
+        <span class="mb-label">Home</span>
+    </a>
+
+    <a href="list-form.html" class="mb-item active">
+        <svg viewBox="0 0 24 24" class="mb-icon">
+            <path d="M4 4h16v2H4V4zm0 5h16v2H4V9zm0 5h10v2H4v-2z"/>
+        </svg>
+        <span class="mb-label">List Form</span>
+    </a>
+
+    <a href="rekap.html" class="mb-item">
+        <svg viewBox="0 0 24 24" class="mb-icon">
+            <path d="M3 13h4v8H3v-8zm7-6h4v14h-4V7zm7-4h4v18h-4V3z"/>
+        </svg>
+        <span class="mb-label">Rekap</span>
+    </a>
+
+    <a href="ganti-nomor.html" class="mb-item">
+        <svg viewBox="0 0 24 24" class="mb-icon">
+            <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4 0-8 2-8 5v3h16v-3c0-3-4-5-8-5z"/>
+        </svg>
+        <span class="mb-label">Kendala</span>
+    </a>
+</nav>
 
 <footer class="footer">
     <div class="footer-inner">
         <span>&copy; 2025 BSI Scholarship Hub. Built as a static site on GitHub Pages.</span>
     </div>
 </footer>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="scripts/main.js"></script>
+<script src="scripts/main.js"></script>
 </body>
 </html>
