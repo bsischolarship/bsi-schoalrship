@@ -1126,3 +1126,191 @@ a {
     font-size: 24px;
   }
 }
+
+
+/* ================= STATUS CELL HIGHLIGHT ================= */
+.td-center {
+  text-align: center;
+  font-weight: 600;
+}
+
+/* HADIR */
+.cell-yes {
+  background: #e6f9f0;
+  color: #16a34a;
+}
+
+/* TUGAS PENGGANTI */
+.cell-tp {
+  background: #fff7e6;
+  color: #ca8a04;
+}
+
+/* TIDAK HADIR */
+.cell-no {
+  background: #fdecec;
+  color: #dc2626;
+}
+
+/* Biar rapi */
+.rekap-table td.cell-yes,
+.rekap-table td.cell-tp,
+.rekap-table td.cell-no {
+  border-radius: 8px;
+}
+
+/* ================= TABLE DENSITY COMPACT ================= */
+
+/* Tinggi baris lebih padat */
+.rekap-table td,
+.rekap-table th {
+  padding: 6px 8px;          /* sebelumnya biasanya 12–16px */
+  font-size: 13px;
+}
+
+/* Header tetap tegas */
+.rekap-table th {
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+/* Center cell */
+.td-center {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* STATUS CELL – COMPACT */
+.cell-yes,
+.cell-no,
+.cell-tp {
+  padding: 4px 6px !important;
+  border-radius: 6px;
+}
+
+/* Icon size diperkecil */
+.cell-yes span,
+.cell-no span {
+  font-size: 14px;
+}
+
+/* TP lebih kecil & rapi */
+.cell-tp {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* WARNA LEBIH SOFT (TIDAK TERLALU MELEBAR) */
+.cell-yes {
+  background: #ecfdf5;
+  color: #16a34a;
+}
+
+.cell-no {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.cell-tp {
+  background: #fffbeb;
+  color: #ca8a04;
+}
+
+/* Mobile: tambah sedikit padding horizontal */
+@media (max-width: 768px) {
+  .rekap-table td,
+  .rekap-table th {
+    padding: 5px 6px;
+    font-size: 12px;
+  }
+}
+
+
+
+/* ================= MOBILE NAV ================= */
+.nav {
+  display: flex;
+  gap: 24px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .nav {
+    position: absolute;
+    top: 64px;
+    right: 16px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    flex-direction: column;
+    padding: 12px;
+    min-width: 200px;
+
+    display: none;
+    z-index: 9999;
+  }
+
+  .nav.nav-open {
+    display: flex;
+  }
+
+  .nav-toggle {
+    display: block;
+    font-size: 22px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+  .nav-toggle {
+    display: none;
+  }
+}
+
+
+/* ================= MOBILE NAV ACTIVE STYLE ================= */
+@media (max-width: 768px) {
+  .nav .nav-link {
+    padding: 12px 14px;
+    border-radius: 8px;
+    color: #475569; /* abu netral */
+    font-weight: 500;
+    text-align: center;
+  }
+
+  /* ACTIVE — TANPA KOTAK */
+  .nav .nav-link--active {
+    background: transparent !important;
+    color: #00a79d; /* warna BSI */
+    font-weight: 600;
+    position: relative;
+  }
+
+  /* INDICATOR GARIS HALUS */
+  .nav .nav-link--active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 25%;
+    bottom: 25%;
+    width: 4px;
+    border-radius: 4px;
+    background: #00a79d;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav {
+    animation: fadeSlide .2s ease;
+  }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
+
+
