@@ -41,15 +41,7 @@ a {
     border-bottom: 1px solid rgba(229, 231, 235, 0.9);
 }
 
-.topbar-inner {
-    max-width: 1120px;
-    margin: 0 auto;
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-}
+
 
 .logo {
     display: flex;
@@ -1479,4 +1471,284 @@ a {
     font-size: 13px;
     color: #555;
     line-height: 1.3;
+}
+
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+}
+
+.logo-text-main {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.batch-highlight {
+    font-size: 12px;
+    font-weight: 800;
+    color: #ffffff;
+    background: #00A79D;
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-top: 2px;
+    display: inline-block;
+}
+
+.batch-banner {
+    width: 100%;
+    background: linear-gradient(90deg, #0055A5, #00A79D);
+    color: #ffffff;
+    text-align: center;
+    font-weight: 800;
+    padding: 8px 12px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+/* =========================
+   HEADER UTAMA
+   ========================= */
+.main-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e6edf2;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* =========================
+   BRANDING
+   ========================= */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+
+.brand-batch {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #ffffff;
+    background: #00A79D;
+    padding: 3px 10px;
+    border-radius: 999px;
+    width: fit-content;
+}
+
+/* =========================
+   NAVIGATION
+   ========================= */
+.main-nav {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-link {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4a5568;
+    text-decoration: none;
+    border-radius: 999px;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    background: #f1f7f9;
+    color: #0055A5;
+}
+
+.nav-link.active {
+    background: linear-gradient(90deg, #0055A5, #00A79D);
+    color: #ffffff;
+}
+
+
+/* =====================
+   TOPBAR CLEAN
+   ===================== */
+.topbar {
+    background: #ffffff;
+    border-bottom: 1px solid #e5edf3;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.topbar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* =====================
+   BRAND
+   ===================== */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+}
+
+.brand-logo {
+    height: 36px;
+}
+
+.brand-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #003f5c;
+    line-height: 1.2;
+}
+
+.brand-batch {
+    margin-top: 2px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffffff;
+    background: #00A79D;
+    padding: 2px 10px;
+    border-radius: 999px;
+    width: fit-content;
+}
+
+/* =====================
+   NAV
+   ===================== */
+.nav {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-link {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4a5568;
+    text-decoration: none;
+    border-radius: 999px;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    background: #f2f7f9;
+    color: #0055A5;
+}
+
+.nav-link--active {
+    background: linear-gradient(90deg, #0055A5, #00A79D);
+    color: #ffffff;
+}
+
+/* =====================
+   MOBILE
+   ===================== */
+.nav-toggle {
+    display: none;
+    font-size: 22px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .nav {
+        display: none;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        flex-direction: column;
+        padding: 6px;
+        width: 200px;
+    }
+
+    .nav.show {
+        display: flex;
+    }
+
+    .nav-toggle {
+        display: block;
+    }
+}
+
+
+        .nim-field-wrapper {
+            position: relative;
+        }
+
+        .nim-suggestion-box {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 240px;
+            overflow-y: auto;
+            z-index: 9999;
+            display: none;
+        }
+
+        .nim-suggestion-item {
+            padding: 10px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .nim-suggestion-item:hover {
+            background: #f0f7f6;
+        }
+
+        .nim-suggestion-item strong {
+            color: #00a79d;
+        }
+
+/* =====================
+   TOPBAR + AKSEN BSI
+   ===================== */
+.topbar {
+    background: #ffffff;
+    border-bottom: 1px solid #e5edf3;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* GARIS KUNING BSI */
+.topbar::after {
+    content: "";
+    display: block;
+    height: 3px;
+    background: #F5B400; /* Kuning BSI */
+    width: 100%;
 }
