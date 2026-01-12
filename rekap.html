@@ -139,6 +139,11 @@ let rawData = [];
 let filteredData = [];
 let currentPage = 1;
 
+/* ================= URL FILTER (FROM HOME) ================= */
+const _qs = new URLSearchParams(window.location.search);
+const _filterType = (_qs.get("type") || "").trim().toLowerCase();   // peserta | kampus | kelompok
+const _filterValue = (_qs.get("value") || "").trim();
+
 /* ================= UTIL ================= */
 function monthLabel(d) {
   const [y, m] = d.split("-");
@@ -244,8 +249,8 @@ function renderTable() {
             ${icon(r.pre_test)}
             ${icon(r.post_test)}
             ${icon(r.assessment)}
-            ${icon(r.pembinaan)}
             ${icon(r.mentoring)}
+            ${icon(r.pembinaan)}
         </tr>
         `;
   });
@@ -258,14 +263,14 @@ function renderTable() {
 function applyFilter() {
   filteredData = rawData
     .filter(r =>
-      (!fNoInduk.value || r.no_induk.includes(fNoInduk.value)) &&
-      (!fNama.value || r.nama.toLowerCase().includes(fNama.value.toLowerCase())) &&
-      (!fKampus.value || r.kampus.toLowerCase().includes(fKampus.value.toLowerCase())) &&
+      (!fNoInduk.value || (r.no_induk || "").includes(fNoInduk.value)) &&
+      (!fNama.value || (r.nama || "").toLowerCase().includes(fNama.value.toLowerCase())) &&
+      (!fKampus.value || (r.kampus || "").toLowerCase().includes(fKampus.value.toLowerCase())) &&
       (!fKelompok.value || (r.kelompok || "").toLowerCase().includes(fKelompok.value.toLowerCase())) &&
       (!fPeriode.value || monthLabel(r.tanggal) === fPeriode.value)
     )
     // SORT A–Z by Nama
-    .sort((a, b) => a.nama.localeCompare(b.nama, "id"));
+    .sort((a, b) => (a.nama || "").localeCompare((b.nama || ""), "id"));
 
   currentPage = 1;
   renderKPI(filteredData);
@@ -279,18 +284,23 @@ function resetFilter() {
   fKelompok.value = "";
   fPeriode.value = "";
   applyFilter();
+
+  // opsional: bersihkan query string agar kembali "normal"
+  // history.replaceState(null, "", "rekap.html");
 }
 
 /* ================= PAGINATION ================= */
 function goFirst(){ currentPage = 1; renderTable(); }
 function goPrev(){ if(currentPage > 1){ currentPage--; renderTable(); } }
 function goNext(){
-  if(currentPage < Math.ceil(filteredData.length / PAGE_SIZE)){
-    currentPage++; renderTable();
+  const maxPage = Math.max(1, Math.ceil(filteredData.length / PAGE_SIZE));
+  if(currentPage < maxPage){
+    currentPage++;
+    renderTable();
   }
 }
 function goLast(){
-  currentPage = Math.ceil(filteredData.length / PAGE_SIZE);
+  currentPage = Math.max(1, Math.ceil(filteredData.length / PAGE_SIZE));
   renderTable();
 }
 
@@ -314,13 +324,33 @@ async function init() {
 
   rawData = filteredData = all;
 
-  setupSuggest(fNoInduk, [...new Set(all.map(r => r.no_induk))]);
-  setupSuggest(fNama, [...new Set(all.map(r => r.nama))]);
-  setupSuggest(fKampus, [...new Set(all.map(r => r.kampus))]);
-  setupSuggest(fKelompok, [...new Set(all.map(r => r.kelompok).filter(Boolean))]);
+  setupSuggest(fNoInduk, [...new Set(all.map(r => (r.no_induk || "")).filter(Boolean))]);
+  setupSuggest(fNama, [...new Set(all.map(r => (r.nama || "")).filter(Boolean))]);
+  setupSuggest(fKampus, [...new Set(all.map(r => (r.kampus || "")).filter(Boolean))]);
+  setupSuggest(fKelompok, [...new Set(all.map(r => (r.kelompok || "")).filter(Boolean))]);
 
   [...new Set(all.map(r => monthLabel(r.tanggal)))]
+    .sort((a,b) => {
+      // sort periode: "Mon YYYY" naive -> keep as-is if you prefer
+      // biar konsisten, kita urutkan alfabet dulu (tetap ringan)
+      return a.localeCompare(b, "id");
+    })
     .forEach(p => fPeriode.add(new Option(p, p)));
+
+  /* ================= AUTO-FILL FILTER FROM HOME ================= */
+  if (_filterType && _filterValue) {
+    // value dari URL harus aman (decode)
+    const v = decodeURIComponent(_filterValue);
+
+    if (_filterType === "peserta") {
+      // best effort: isi Nama; jika Home nanti kirim no_induk, tetap bisa dicari di Nama via includes? (tidak), tapi default Home kirim nama.
+      fNama.value = v;
+    } else if (_filterType === "kampus") {
+      fKampus.value = v;
+    } else if (_filterType === "kelompok") {
+      fKelompok.value = v;
+    }
+  }
 
   applyFilter();
 }
