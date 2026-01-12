@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="assets/style.css" />
 
 <style>
-/* ================= HERO BUTTON (SOFT + LEFT ACCENT) ================= */
+/* ================= HERO BUTTON ================= */
 .hero-actions{
   display:flex;
   gap:14px;
@@ -31,18 +31,10 @@
   width:6px;
   border-radius:8px;
 }
-.hero-btn.blue{
-  background:#eef5ff;
-  color:#003b73;
-}
+.hero-btn.blue{background:#eef5ff;color:#003b73}
 .hero-btn.blue::before{background:#0055A5}
-.hero-btn.yellow{
-  background:#fff6db;
-  color:#5c4a00;
-}
+.hero-btn.yellow{background:#fff6db;color:#5c4a00}
 .hero-btn.yellow::before{background:#f4c430}
-.hero-btn strong{font-size:16px}
-.hero-btn small{font-size:12px;opacity:.85}
 
 /* ================= KPI ================= */
 .kpi-grid{
@@ -57,7 +49,7 @@
 .kpi-blue{background:#eaf2fb}
 .kpi-yellow{background:#fff7db}
 
-/* ================= TABLE LAYOUT ================= */
+/* ================= TABLE ================= */
 .frame-2col{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -113,6 +105,14 @@ td.center{text-align:center}
   text-align:center;
   font-weight:600;
 }
+
+/* ================= CLICKABLE ROW ================= */
+.click-row{
+  cursor:pointer;
+}
+.click-row:hover{
+  background:#f5faff !important;
+}
 </style>
 </head>
 
@@ -163,22 +163,10 @@ td.center{text-align:center}
 </section>
 
 <section class="kpi-grid">
-  <div class="card card--kpi kpi-blue">
-    <div>Total Peserta</div>
-    <strong id="kpiPeserta">—</strong>
-  </div>
-  <div class="card card--kpi kpi-yellow">
-    <div>Total Aktivitas</div>
-    <strong id="kpiAktivitas">—</strong>
-  </div>
-  <div class="card card--kpi kpi-blue">
-    <div>Rata-rata Kehadiran</div>
-    <strong id="kpiRate">—%</strong>
-  </div>
-  <div class="card card--kpi kpi-yellow">
-    <div>Total Kampus</div>
-    <strong id="kpiCampus">—</strong>
-  </div>
+  <div class="card card--kpi kpi-blue"><div>Total Peserta</div><strong id="kpiPeserta">—</strong></div>
+  <div class="card card--kpi kpi-yellow"><div>Total Aktivitas</div><strong id="kpiAktivitas">—</strong></div>
+  <div class="card card--kpi kpi-blue"><div>Rata-rata Kehadiran</div><strong id="kpiRate">—%</strong></div>
+  <div class="card card--kpi kpi-yellow"><div>Total Kampus</div><strong id="kpiCampus">—</strong></div>
 </section>
 
 <section class="frame-2col">
@@ -231,6 +219,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const sb = window.supabaseClient;
   if (!sb) return;
 
+  window.goRekap = function(type, value){
+    window.location.href =
+      `rekap.html?type=${type}&value=${encodeURIComponent(value)}`;
+  }
+
   const PAGE = 1000;
   let from = 0, rows = [];
 
@@ -239,51 +232,62 @@ document.addEventListener("DOMContentLoaded", async () => {
       .from("rekap_bsi")
       .select("no_induk,nama,kampus,kelompok,pre_test,post_test,assessment,mentoring,pembinaan")
       .range(from, from + PAGE - 1);
+
     if (!data || !data.length) break;
     rows.push(...data);
     from += PAGE;
   }
 
   const isH = v => v === "✅" || v === "TP";
-  const p = {}, k = {}, g = {};
-  let tA = 0, tH = 0;
+  const peserta = {};
+  const kampus = {};
+  const kelompok = {};
+  let totalAct = 0, totalHad = 0;
 
   rows.forEach(r => {
     const hadir = [r.pre_test,r.post_test,r.assessment,r.mentoring,r.pembinaan].filter(isH).length;
-    tA += 5; tH += hadir;
+    totalAct += 5;
+    totalHad += hadir;
 
-    p[r.no_induk] ??= { nama:r.nama, hadir:0, total:0 };
-    p[r.no_induk].hadir += hadir; p[r.no_induk].total += 5;
+    peserta[r.no_induk] ??= { nama:r.nama, hadir:0, total:0 };
+    peserta[r.no_induk].hadir += hadir; peserta[r.no_induk].total += 5;
 
-    k[r.kampus] ??= { hadir:0, total:0 };
-    k[r.kampus].hadir += hadir; k[r.kampus].total += 5;
+    kampus[r.kampus] ??= { nama:r.kampus, hadir:0, total:0 };
+    kampus[r.kampus].hadir += hadir; kampus[r.kampus].total += 5;
 
-    g[r.kelompok] ??= { hadir:0, total:0 };
-    g[r.kelompok].hadir += hadir; g[r.kelompok].total += 5;
+    kelompok[r.kelompok] ??= { nama:r.kelompok, hadir:0, total:0 };
+    kelompok[r.kelompok].hadir += hadir; kelompok[r.kelompok].total += 5;
   });
 
-  const sortFn = (a,b)=> b.rate-a.rate || b.hadir-a.hadir;
-  const arrP = Object.values(p).map(x=>({...x,rate:x.hadir/x.total})).sort(sortFn);
-  const arrK = Object.entries(k).map(([n,v])=>({nama:n,...v,rate:v.hadir/v.total})).sort(sortFn);
-  const arrG = Object.entries(g).map(([n,v])=>({nama:n,...v,rate:v.hadir/v.total})).sort(sortFn);
+  const sortFn = (a,b)=> (b.hadir/b.total)-(a.hadir/a.total) || b.hadir-a.hadir;
 
-  kpiPeserta.textContent = Object.keys(p).length;
-  kpiAktivitas.textContent = tA;
-  kpiRate.textContent = Math.round(tH/tA*100)+"%";
-  kpiCampus.textContent = Object.keys(k).length;
+  const arrPeserta = Object.values(peserta).map(x=>({...x,rate:x.hadir/x.total})).sort(sortFn);
+  const arrKampus  = Object.values(kampus).map(x=>({...x,rate:x.hadir/x.total})).sort(sortFn);
+  const arrKelompok= Object.values(kelompok).map(x=>({...x,rate:x.hadir/x.total})).sort(sortFn);
 
-  function render(el, arr, good=true){
+  kpiPeserta.textContent = Object.keys(peserta).length;
+  kpiAktivitas.textContent = totalAct;
+  kpiRate.textContent = Math.round(totalHad/totalAct*100)+"%";
+  kpiCampus.textContent = Object.keys(kampus).length;
+
+  function render(el, arr, type){
     let h = "<tr><th>#</th><th>Nama</th><th>Hadir</th><th>Perc.</th></tr>";
     arr.slice(0,10).forEach((a,i)=>{
       const pct = Math.round(a.rate*100);
-      const icon = i==0?"🥇":i==1?"🥈":i==2?"🥉":(i+1);
-      h += `<tr class="${i<3?`top${i+1}`:""}">
+      const icon = i===0?"🥇":i===1?"🥈":i===2?"🥉":(i+1);
+
+      h += `
+      <tr class="click-row ${i<3?`top${i+1}`:""}"
+          onclick="goRekap('${type}','${a.nama}')">
         <td class="center rank">${icon}</td>
         <td><strong>${a.nama}</strong></td>
         <td class="center">${a.hadir} dari ${a.total}</td>
         <td>
           <div class="progress-wrap">
-            <div class="progress"><div class="${good?"good-bar":"bad-bar"}" style="width:${pct}%"></div></div>
+            <div class="progress">
+              <div class="${type==='peserta'?'good-bar':'bad-bar'}"
+                   style="width:${pct}%"></div>
+            </div>
             <span class="percent">${pct}%</span>
           </div>
         </td>
@@ -292,12 +296,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     el.innerHTML = h;
   }
 
-  render(tblPesertaTop, arrP, true);
-  render(tblPesertaLow, arrP.slice().reverse(), false);
-  render(tblKampusTop, arrK, true);
-  render(tblKampusLow, arrK.slice().reverse(), false);
-  render(tblKelompokTop, arrG, true);
-  render(tblKelompokLow, arrG.slice().reverse(), false);
+  render(tblPesertaTop, arrPeserta, "peserta");
+  render(tblPesertaLow, arrPeserta.slice().reverse(), "peserta");
+  render(tblKampusTop, arrKampus, "kampus");
+  render(tblKampusLow, arrKampus.slice().reverse(), "kampus");
+  render(tblKelompokTop, arrKelompok, "kelompok");
+  render(tblKelompokLow, arrKelompok.slice().reverse(), "kelompok");
 });
 </script>
 
