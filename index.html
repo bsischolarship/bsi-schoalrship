@@ -1,130 +1,305 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home | Inspirasi BSI Scholarship — Batch 5</title>
-    <link rel="stylesheet" href="assets/style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Home | Inspirasi BSI Scholarship — Batch 5</title>
+<link rel="stylesheet" href="assets/style.css" />
+
+<style>
+/* ================= HERO BUTTON (SOFT + LEFT ACCENT) ================= */
+.hero-actions{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.hero-btn{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  padding:14px 18px 14px 22px;
+  border-radius:16px;
+  position:relative;
+  text-decoration:none;
+  min-width:220px;
+}
+.hero-btn::before{
+  content:"";
+  position:absolute;
+  left:0; top:8px; bottom:8px;
+  width:6px;
+  border-radius:8px;
+}
+.hero-btn.blue{
+  background:#eef5ff;
+  color:#003b73;
+}
+.hero-btn.blue::before{background:#0055A5}
+.hero-btn.yellow{
+  background:#fff6db;
+  color:#5c4a00;
+}
+.hero-btn.yellow::before{background:#f4c430}
+.hero-btn strong{font-size:16px}
+.hero-btn small{font-size:12px;opacity:.85}
+
+/* ================= KPI ================= */
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-top:26px;
+}
+@media(max-width:768px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+}
+.kpi-blue{background:#eaf2fb}
+.kpi-yellow{background:#fff7db}
+
+/* ================= TABLE LAYOUT ================= */
+.frame-2col{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-top:30px;
+}
+@media(max-width:900px){
+  .frame-2col{grid-template-columns:1fr}
+}
+.data-card{
+  background:#fff;
+  border-radius:16px;
+  overflow:hidden;
+}
+.data-head{
+  padding:14px 16px;
+  font-weight:700;
+}
+.data-head.good{background:#e9f8f3}
+.data-head.bad{background:#fdecea}
+.data-body{padding:10px 16px 16px}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px;border-bottom:1px solid #eee}
+th{text-align:center}
+td.center{text-align:center}
+
+.rank{font-weight:700}
+.top1{background:#e8f8f5}
+.top2{background:#f1fcfa}
+.top3{background:#f7fffd}
+
+/* ================= PROGRESS ================= */
+.progress-wrap{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.progress{
+  flex:1;
+  height:6px;
+  background:#eee;
+  border-radius:4px;
+}
+.progress>div{
+  height:100%;
+  border-radius:4px;
+}
+.good-bar{background:#1abc9c}
+.bad-bar{background:#e74c3c}
+.percent{
+  min-width:42px;
+  text-align:center;
+  font-weight:600;
+}
+</style>
 </head>
+
 <body data-page="home">
 
-
 <header class="topbar">
-    <div class="topbar-inner">
-
-        <!-- BRAND -->
-        <a href="index.html" class="brand">
-            <img src="assets/logo.png" alt="BSI Scholarship Logo" class="brand-logo">
-            <div class="brand-text">
-                <div class="brand-title">Inspirasi BSI Scholarship</div>
-                <div class="brand-batch">Batch 5</div>
-            </div>
-        </a>
-
-        <!-- TOGGLE MOBILE -->
-        <button class="nav-toggle" aria-label="Toggle menu" onclick="toggleNav()">
-            ☰
-        </button>
-
-        <!-- NAV -->
-        <nav class="nav" id="mobileNav">
-            <a href="index.html" class="nav-link nav-link--active">Home</a>
-            <a href="list-form.html" class="nav-link">List Form</a>
-            <a href="rekap.html" class="nav-link">Rekap Aktivitas</a>
-            <a href="ganti-nomor.html" class="nav-link">Kendala</a>
-        </nav>
-
-    </div>
+  <div class="topbar-inner">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.png" class="brand-logo">
+      <div class="brand-text">
+        <div class="brand-title">Inspirasi BSI Scholarship</div>
+        <div class="brand-batch">Batch 5</div>
+      </div>
+    </a>
+    <button class="nav-toggle" onclick="toggleNav()">☰</button>
+    <nav class="nav" id="mobileNav">
+      <a href="index.html" class="nav-link nav-link--active">Home</a>
+      <a href="list-form.html" class="nav-link">List Form</a>
+      <a href="rekap.html" class="nav-link">Rekap Aktivitas</a>
+      <a href="ganti-nomor.html" class="nav-link">Kendala</a>
+    </nav>
+  </div>
 </header>
 
+<main class="page page--full">
 
-    <main class="page page--full">
-        <section class="hero hero--center">
-            <div class="hero-badge">Hi, Sharia Young Leader! ✨</div>
-            <h1 class="hero-title">Bagaimana aktivitasmu hari ini?</h1>
-            <p class="hero-subtitle">
-                Pilih aktivitas yang ingin kamu lakukan. Akses portal resmi, cek form,
-                dan isi laporan aktivitas dengan alur yang simpel dan rapi.
-            </p>
-            <div class="hero-actions">
-                <a href="list-form.html" class="btn btn-primary">Lihat Semua Form</a>
-                <a href="rekap.html" class="btn btn-ghost">Lihat Rekap Aktivitas</a>
-            </div>
-        </section>
+<section class="hero hero--center">
+  <div class="hero-badge">Hi, Sharia Young Leader! ✨</div>
+  <h1 class="hero-title">Bagaimana aktivitasmu hari ini?</h1>
+  <p class="hero-subtitle">
+    Ringkasan dihitung otomatis dari data rekap kehadiran awardee.
+  </p>
 
-        <section id="quick-actions" class="card-grid card-grid--3">
-            <a href="https://sites.google.com/view/awardee-portal" target="_blank" rel="noopener" class="card card--action">
-                <div class="card-icon card-icon--purple">✨</div>
-                <h2 class="card-title">Awardee Portal</h2>
-                <p class="card-text">
-                    Temukan semua informasi penting seputar kegiatan Pembinaan BSI Scholarship Inspirasi Batch 5
-                </p>
-                <span class="card-link">Buka Portal Awardee →</span>
-            </a>
+  <div class="hero-actions">
+    <a href="list-form.html" class="hero-btn blue">
+      <strong>Lihat Semua Form</strong>
+      <small>Isi & cek form aktivitas</small>
+    </a>
+    <a href="https://sites.google.com/view/awardee-portal" target="_blank" class="hero-btn blue">
+      <strong>Awardee Portal</strong>
+      <small>Informasi & pembinaan resmi</small>
+    </a>
+    <a href="rekap.html" class="hero-btn yellow">
+      <strong>Rekap Aktivitas</strong>
+      <small>Detail kehadiran & evaluasi</small>
+    </a>
+  </div>
+</section>
 
-            <a href="https://prestasi.bsischolarhub.id/" target="_blank" rel="noopener" class="card card--action">
-                <div class="card-icon card-icon--gold">⭐</div>
-                <h2 class="card-title">Akses Portal BSI Prestasi</h2>
-                <p class="card-text">
-                    Kelola data prestasi dan aktivitas kamu sebagai Sharia Young Leader
-                    di portal BSI Prestasi.
-                </p>
-                <span class="card-link">Buka Portal Prestasi →</span>
-            </a>
+<section class="kpi-grid">
+  <div class="card card--kpi kpi-blue">
+    <div>Total Peserta</div>
+    <strong id="kpiPeserta">—</strong>
+  </div>
+  <div class="card card--kpi kpi-yellow">
+    <div>Total Aktivitas</div>
+    <strong id="kpiAktivitas">—</strong>
+  </div>
+  <div class="card card--kpi kpi-blue">
+    <div>Rata-rata Kehadiran</div>
+    <strong id="kpiRate">—%</strong>
+  </div>
+  <div class="card card--kpi kpi-yellow">
+    <div>Total Kampus</div>
+    <strong id="kpiCampus">—</strong>
+  </div>
+</section>
 
-            <a href="list-form.html" class="card card--action">
-                <div class="card-icon card-icon--blue">📝</div>
-                <h2 class="card-title">Mengisi Form</h2>
-                <p class="card-text">
-                    Lihat daftar form yang tersedia, mulai dari kehadiran pembinaan,
-                    tugas pengganti, sampai evaluasi.
-                </p>
-                <span class="card-link">Lihat List Form →</span>
-            </a>
-        </section>
-    </main>
+<section class="frame-2col">
+  <div class="data-card">
+    <div class="data-head good">🏆 Top 10 Peserta Rajin</div>
+    <div class="data-body"><table id="tblPesertaTop"></table></div>
+  </div>
+  <div class="data-card">
+    <div class="data-head bad">⚠️ Top 10 Peserta Kurang Aktif</div>
+    <div class="data-body"><table id="tblPesertaLow"></table></div>
+  </div>
 
+  <div class="data-card">
+    <div class="data-head good">🏫 Top 10 Kampus Aktif</div>
+    <div class="data-body"><table id="tblKampusTop"></table></div>
+  </div>
+  <div class="data-card">
+    <div class="data-head bad">🏫 Kampus Kurang Aktif</div>
+    <div class="data-body"><table id="tblKampusLow"></table></div>
+  </div>
 
-<!-- MOBILE BOTTOM NAV -->
+  <div class="data-card">
+    <div class="data-head good">👥 Top 10 Kelompok Aktif</div>
+    <div class="data-body"><table id="tblKelompokTop"></table></div>
+  </div>
+  <div class="data-card">
+    <div class="data-head bad">👥 Kelompok Kurang Aktif</div>
+    <div class="data-body"><table id="tblKelompokLow"></table></div>
+  </div>
+</section>
+
+</main>
+
 <nav class="mobile-bottom-nav">
-  <a href="index.html" class="mb-item active">
-    <svg viewBox="0 0 24 24" class="mb-icon">
-      <path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-10.5z"/>
-    </svg>
-    <span class="mb-label">Home</span>
-  </a>
-
-  <a href="list-form.html" class="mb-item">
-    <svg viewBox="0 0 24 24" class="mb-icon">
-      <path d="M4 4h16v2H4V4zm0 5h16v2H4V9zm0 5h10v2H4v-2z"/>
-    </svg>
-    <span class="mb-label">List Form</span>
-  </a>
-
-  <a href="rekap.html" class="mb-item">
-    <svg viewBox="0 0 24 24" class="mb-icon">
-      <path d="M3 13h4v8H3v-8zm7-6h4v14h-4V7zm7-4h4v18h-4V3z"/>
-    </svg>
-    <span class="mb-label">Rekap</span>
-  </a>
-
-  <a href="ganti-nomor.html" class="mb-item">
-    <svg viewBox="0 0 24 24" class="mb-icon">
-      <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4 0-8 2-8 5v3h16v-3c0-3-4-5-8-5z"/>
-    </svg>
-    <span class="mb-label">Kendala</span>
-  </a>
+  <a href="index.html" class="mb-item active"><span class="mb-label">Home</span></a>
+  <a href="list-form.html" class="mb-item"><span class="mb-label">List Form</span></a>
+  <a href="rekap.html" class="mb-item"><span class="mb-label">Rekap</span></a>
+  <a href="ganti-nomor.html" class="mb-item"><span class="mb-label">Kendala</span></a>
 </nav>
 
-
 <footer class="footer">
-    <div class="footer-inner">
-        <span>&copy; 2025 BSI Scholarship Hub. Built as a static site on GitHub Pages.</span>
-    </div>
+  <div class="footer-inner">&copy; 2025 BSI Scholarship Hub</div>
 </footer>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="scripts/main.js"></script>
+<script src="scripts/main.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const sb = window.supabaseClient;
+  if (!sb) return;
+
+  const PAGE = 1000;
+  let from = 0, rows = [];
+
+  while (true) {
+    const { data } = await sb
+      .from("rekap_bsi")
+      .select("no_induk,nama,kampus,kelompok,pre_test,post_test,assessment,mentoring,pembinaan")
+      .range(from, from + PAGE - 1);
+    if (!data || !data.length) break;
+    rows.push(...data);
+    from += PAGE;
+  }
+
+  const isH = v => v === "✅" || v === "TP";
+  const p = {}, k = {}, g = {};
+  let tA = 0, tH = 0;
+
+  rows.forEach(r => {
+    const hadir = [r.pre_test,r.post_test,r.assessment,r.mentoring,r.pembinaan].filter(isH).length;
+    tA += 5; tH += hadir;
+
+    p[r.no_induk] ??= { nama:r.nama, hadir:0, total:0 };
+    p[r.no_induk].hadir += hadir; p[r.no_induk].total += 5;
+
+    k[r.kampus] ??= { hadir:0, total:0 };
+    k[r.kampus].hadir += hadir; k[r.kampus].total += 5;
+
+    g[r.kelompok] ??= { hadir:0, total:0 };
+    g[r.kelompok].hadir += hadir; g[r.kelompok].total += 5;
+  });
+
+  const sortFn = (a,b)=> b.rate-a.rate || b.hadir-a.hadir;
+  const arrP = Object.values(p).map(x=>({...x,rate:x.hadir/x.total})).sort(sortFn);
+  const arrK = Object.entries(k).map(([n,v])=>({nama:n,...v,rate:v.hadir/v.total})).sort(sortFn);
+  const arrG = Object.entries(g).map(([n,v])=>({nama:n,...v,rate:v.hadir/v.total})).sort(sortFn);
+
+  kpiPeserta.textContent = Object.keys(p).length;
+  kpiAktivitas.textContent = tA;
+  kpiRate.textContent = Math.round(tH/tA*100)+"%";
+  kpiCampus.textContent = Object.keys(k).length;
+
+  function render(el, arr, good=true){
+    let h = "<tr><th>#</th><th>Nama</th><th>Hadir</th><th>Perc.</th></tr>";
+    arr.slice(0,10).forEach((a,i)=>{
+      const pct = Math.round(a.rate*100);
+      const icon = i==0?"🥇":i==1?"🥈":i==2?"🥉":(i+1);
+      h += `<tr class="${i<3?`top${i+1}`:""}">
+        <td class="center rank">${icon}</td>
+        <td><strong>${a.nama}</strong></td>
+        <td class="center">${a.hadir} dari ${a.total}</td>
+        <td>
+          <div class="progress-wrap">
+            <div class="progress"><div class="${good?"good-bar":"bad-bar"}" style="width:${pct}%"></div></div>
+            <span class="percent">${pct}%</span>
+          </div>
+        </td>
+      </tr>`;
+    });
+    el.innerHTML = h;
+  }
+
+  render(tblPesertaTop, arrP, true);
+  render(tblPesertaLow, arrP.slice().reverse(), false);
+  render(tblKampusTop, arrK, true);
+  render(tblKampusLow, arrK.slice().reverse(), false);
+  render(tblKelompokTop, arrG, true);
+  render(tblKelompokLow, arrG.slice().reverse(), false);
+});
+</script>
+
 </body>
 </html>
-
-
