@@ -120,7 +120,7 @@ a {
     border-radius: 26px;
     padding: 26px 24px 24px;
     margin-bottom: 22px;
-
+    position: relative;
     overflow: hidden;
 }
 
@@ -1752,3 +1752,4 @@ a {
     background: #F5B400; /* Kuning BSI */
     width: 100%;
 }
+
