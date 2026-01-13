@@ -722,7 +722,7 @@ a {
       font-size: 30px;
       margin-top: 6px;
     }
-    .kpi-blue { background: linear-gradient(135deg,#2563eb,#1e40af); }
+    .kpi-blues { background: linear-gradient(135deg,#2563eb,#1e40af); }
     .kpi-green { background: linear-gradient(135deg,#16a34a,#166534); }
     .kpi-teal { background: linear-gradient(135deg,#0d9488,#134e4a); }
     .kpi-orange { background: linear-gradient(135deg,#f59e0b,#b45309); }
@@ -1754,4 +1754,193 @@ a {
     width: 100%;
 }
 
+/* ================= HERO BUTTON ================= */
+.hero-actions{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.hero-btn{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  padding:14px 18px 14px 22px;
+  border-radius:16px;
+  position:relative;
+  text-decoration:none;
+  min-width:220px;
+}
+.hero-btn::before{
+  content:"";
+  position:absolute;
+  left:0; top:8px; bottom:8px;
+  width:6px;
+  border-radius:8px;
+}
+.hero-btn.blue{background:#eef5ff;color:#003b73}
+.hero-btn.blue::before{background:#0055A5}
+.hero-btn.yellow{background:#fff6db;color:#5c4a00}
+.hero-btn.yellow::before{background:#f4c430}
 
+/* ================= KPI ================= */
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-top:26px;
+}
+@media(max-width:768px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+}
+.kpi-blue{background:rgba(0, 159, 154, 0.08)}
+.kpi-yellow{background:#fff7db}
+
+/* ================= TABLE ================= */
+.frame-2col{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-top:30px;
+}
+@media(max-width:900px){
+  .frame-2col{grid-template-columns:1fr}
+}
+.data-card{
+  background:#fff;
+  border-radius:16px;
+  overflow:hidden;
+}
+.data-head{
+  padding:14px 16px;
+  font-weight:700;
+}
+.data-head.good{background:#e9f8f3}
+.data-head.bad{background:#fdecea}
+.data-body{padding:10px 16px 16px}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px;border-bottom:1px solid #eee}
+th{text-align:center}
+td.center{text-align:center}
+
+.rank{font-weight:700}
+.top1{background:#e8f8f5}
+.top2{background:#f1fcfa}
+.top3{background:#f7fffd}
+
+/* ================= PROGRESS ================= */
+.progress-wrap{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.progress{
+  flex:1;
+  height:6px;
+  background:#eee;
+  border-radius:4px;
+}
+.progress>div{
+  height:100%;
+  border-radius:4px;
+}
+.good-bar{background:#1abc9c}
+.bad-bar{background:#e74c3c}
+.percent{
+  min-width:42px;
+  text-align:center;
+  font-weight:600;
+}
+
+.hero--dashboard {
+    text-align: center;
+}
+
+.hero-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 28px;
+}
+
+.hero-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 16px 18px;
+    text-align: left;
+    box-shadow: 0 6px 18px rgba(0,0,0,.06);
+    transition: all .25s ease;
+    border-left: 6px solid transparent;
+}
+
+.hero-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 26px rgba(0,0,0,.12);
+}
+
+.hero-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.hero-card-icon {
+    width: 28px;
+    height: 28px;
+    color: inherit;
+    flex-shrink: 0;
+}
+
+.hero-card-icon path {
+    fill: currentColor;
+}
+
+.hero-card-title {
+    font-size: 15px;
+    line-height: 1.3;
+    margin: 2px 0 0 0;
+    font-weight: 600;
+}
+
+.hero-card-text {
+    font-size: 13px;
+    color: #555;
+}
+
+/* VARIANT WARNA */
+.hero-card--blue {
+    border-left-color: #0055a5;
+    color: #0055a5;
+}
+
+.hero-card--teal {
+    border-left-color: #00a79d;
+    color: #00a79d;
+}
+
+.hero-card--yellow {
+    border-left-color: #f5b400;
+    color: #7a5a00;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .hero-card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-card {
+        padding: 14px 16px;
+    }
+}
+
+
+/* ================= CLICKABLE ROW ================= */
+.click-row{
+  cursor:pointer;
+}
+.click-row:hover{
+  background:#f5faff !important;
+}
