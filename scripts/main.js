@@ -1,5 +1,5 @@
 /* =========================================================
-   SUPABASE CONFIG
+   SUPABASE CONFIGS
 ========================================================= */
 
 const SUPABASE_URL = "https://iyfwaqwmnmjfagszttts.supabase.co";
