@@ -597,7 +597,7 @@ function applyFilter() {
       (selectedPeriode.length === 0 || selectedPeriode.includes(monthLabel(r.tanggal)))
     )
     // SORT A–Z by Nama
-    .sort((a, b) => (a.nama || "").localeCompare((b.nama || ""), "id"));
+    .sort((a, b) => (a.no_induk || "").localeCompare((b.no_induk || ""), "id"));
 
   currentPage = 1;
   renderKPI(filteredData);
@@ -791,4 +791,5 @@ init();
 
 </body>
 </html>
+
 
