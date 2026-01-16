@@ -5,6 +5,256 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rekap | Inspirasi BSI Scholarship — Batch 5</title>
     <link rel="stylesheet" href="assets/style.css" />
+
+    <!-- ===== TAMBAHAN STYLE (TIDAK MENGHAPUS STYLE ANDA) ===== -->
+    <style>
+      /* Wrapper dropdown periode agar sejajar dengan input lain */
+      .periode-dropdown {
+        position: relative;
+        width: 100%;
+      }
+
+      /* Tombol tampilannya mirip input (tidak makan tempat, tidak wrap) */
+      .periode-btn {
+        width: 100%;
+        height: 44px;
+        padding: 0 14px;
+        border-radius: 14px;
+        border: 1px solid #cfd6e4;
+        background: #fff;
+        font-size: 14px;
+        text-align: left;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .periode-btn .periode-btn-label {
+        flex: 1;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .periode-btn .periode-btn-caret {
+        flex: 0 0 auto;
+        opacity: 0.7;
+      }
+
+      /* Panel overlay (tidak mendorong layout, mobile aman) */
+      .periode-panel {
+        display: none;
+        position: absolute;
+        top: 52px;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border: 1px solid #cfd6e4;
+        border-radius: 14px;
+        max-height: 220px;
+        overflow-y: auto;
+        z-index: 999;
+        padding: 8px;
+      }
+
+      .periode-panel.open {
+        display: block;
+      }
+
+      /* Item dibuat <label> biar KLIK di seluruh box */
+      .periode-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        cursor: pointer;
+        user-select: none;
+        width: 100%;
+      }
+
+      .periode-item:hover {
+        background: #f3f6fb;
+      }
+
+      .periode-item input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        margin: 0;
+        flex: 0 0 auto;
+        accent-color: #00a79d;
+      }
+
+      .periode-item span {
+        flex: 1;
+        min-width: 0;
+        white-space: nowrap;       /* cegah "Des ↵ 2025" */
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* Header kecil di panel (opsional tapi rapi) */
+      .periode-panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 6px 8px 10px;
+        border-bottom: 1px solid #e6ebf3;
+        margin-bottom: 8px;
+      }
+
+      .periode-panel-title {
+        font-size: 12px;
+        opacity: 0.75;
+        white-space: nowrap;
+      }
+
+      .periode-panel-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .periode-mini-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 10px;
+        border: 1px solid #d7deea;
+        background: #fff;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .periode-mini-btn:hover {
+        background: #f3f6fb;
+      }
+
+
+    /* ===== FIX: agar dropdown tidak terpotong ===== */
+    .card,
+    .filter-grid {
+      overflow: visible !important;
+    }
+
+    .periode-panel {
+      z-index: 9999 !important;
+    }
+
+    .periode-panel {
+      margin-top: 4px;
+    }
+
+    /* ===== FILTER GRID PROPORSI BARU ===== */
+    .filter-grid {
+      display: grid;
+      grid-template-columns:
+        1.2fr   /* No Induk (lebih pendek) */
+        1.6fr   /* Nama */
+        1.6fr   /* Kampus */
+        1.2fr   /* Kelompok (lebih pendek) */
+        2.4fr;  /* Periode (PALING PANJANG) */
+      gap: 14px;
+    }
+
+    .periode-dropdown,
+    .periode-btn {
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      .filter-grid {
+        grid-template-columns: 1fr; /* stack */
+      }
+    }
+
+/* ===== BASE BADGE ===== */
+.status-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+/* ===== CHECK (HIJAU SUCCESS) ===== */
+.status-ok {
+  background: #e9f7ef;          /* soft green highlight */
+  border: 2px solid #22c55e;    /* green-500 */
+}
+
+.status-ok::after {
+  content: "✓";
+  position: absolute;
+  color: #16a34a;               /* green-600 */
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+
+/* ===== CROSS (MERAH) ===== */
+.status-no {
+  background: #fdeaea;          /* highlight merah */
+  border: 2px solid #ef4444;
+}
+
+.status-no::after {
+  content: "×";
+  position: absolute;
+  color: #ef4444;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+  transform: translateY(-1px); /* optical centering */
+}
+
+/* ===== TP (NETRAL / KUNING ABU) ===== */
+.status-tp {
+  background: #fef9e7;          /* highlight kuning */
+  border: 2px solid #f59e0b;
+  color: #92400e;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+
+.btn-report{
+  padding:6px 10px;
+  font-size:12px;
+  font-weight:600;
+  border-radius:8px;
+  background:#f1f5ff;
+  color:#1f3c88;
+  border:1px solid #c7d2fe;
+  text-decoration:none;
+}
+
+.btn-report:hover{
+  background:#1f3c88;
+  color:#fff;
+}
+
+
+      /* Mobile: panel tetap overlay, max-height lebih pendek */
+      @media (max-width: 768px) {
+        .periode-panel {
+          max-height: 200px;
+        }
+      }
+    </style>
 </head>
 
 <body data-page="rekap">
@@ -56,9 +306,29 @@
       <input id="fKampus" placeholder="Kampus" autocomplete="off" />
       <input id="fKelompok" placeholder="Kelompok" autocomplete="off" />
 
-      <select id="fPeriode">
+      <!-- ===== PERIODE (DARI SELECT → DROPDOWN MULTI-CHECKBOX) ===== -->
+      <!-- Saya tetap pertahankan SELECT asli (hidden) agar tidak merusak struktur lama, -->
+      <!-- tetapi UI yang dipakai adalah dropdown custom. -->
+      <select id="fPeriode" style="display:none;">
         <option value="">Semua Periode</option>
       </select>
+
+      <div class="periode-dropdown" id="periodeDropdown">
+        <button type="button" class="periode-btn" id="periodeBtn" aria-haspopup="listbox" aria-expanded="false">
+          <span class="periode-btn-label" id="periodeBtnLabel">Semua Periode</span>
+          <span class="periode-btn-caret">▼</span>
+        </button>
+        <div class="periode-panel" id="periodePanel">
+          <div class="periode-panel-head">
+            <div class="periode-panel-title">Pilih Periode</div>
+            <div class="periode-panel-actions">
+              <button type="button" class="periode-mini-btn" id="periodeSelectAll">All</button>
+              <button type="button" class="periode-mini-btn" id="periodeClear">Clear</button>
+            </div>
+          </div>
+          <div id="periodeList"></div>
+        </div>
+      </div>
 
       <button class="btn-reset" onclick="resetFilter()">Reset</button>
     </div>
@@ -75,13 +345,14 @@
             <th>No Induk</th>
             <th>Nama</th>
             <th>Kampus</th>
-            <th>Kelompok</th>
+            <th>Kel</th>
             <th>Bulan</th>
             <th>Pre Test</th>
             <th>Post Test</th>
             <th>Assessment</th>
             <th>Mentoring</th>
             <th>Pembinaan</th>
+            <th>Report</th>
           </tr>
         </thead>
         <tbody id="rekapBody"></tbody>
@@ -139,6 +410,9 @@ let rawData = [];
 let filteredData = [];
 let currentPage = 1;
 
+/* ================= MULTI PERIODE STATE ================= */
+let selectedPeriode = [];
+
 /* ================= URL FILTER (FROM HOME) ================= */
 const _qs = new URLSearchParams(window.location.search);
 const _filterType = (_qs.get("type") || "").trim().toLowerCase();   // peserta | kampus | kelompok
@@ -155,15 +429,26 @@ function icon(v) {
   const val = String(v).trim();
 
   if (val === "✅") {
-    return `<td class="td-center cell-yes">✅</td>`;
+    return `
+      <td class="td-center">
+        <span class="status-badge status-ok" title="Sudah lengkap"></span>
+      </td>`;
   }
 
   if (val === "TP") {
-    return `<td class="td-center cell-tp">TP</td>`;
+    return `
+      <td class="td-center">
+        <span class="status-badge status-tp" title="Tidak perlu">TP</span>
+      </td>`;
   }
 
-  return `<td class="td-center cell-no">❌</td>`;
+  return `
+    <td class="td-center">
+      <span class="status-badge status-no" title="Belum"></span>
+    </td>`;
 }
+
+
 
 /* ================= AUTOCOMPLETE ================= */
 const globalSuggest = document.getElementById("globalSuggest");
@@ -251,12 +536,54 @@ function renderTable() {
             ${icon(r.assessment)}
             ${icon(r.mentoring)}
             ${icon(r.pembinaan)}
+            <td class="td-center">
+            <a
+              class="btn-report"
+              href="report_pdfs/${monthLabel(r.tanggal)}/${r.no_induk}.pdf"
+              target="_blank"
+            >
+              View Report
+            </a>
+          </td>
         </tr>
         `;
   });
 
   pageInfo.textContent =
     `Page ${currentPage} / ${Math.max(1, Math.ceil(filteredData.length / PAGE_SIZE))}`;
+
+
+
+}
+
+/* ================= MULTI PERIODE UI HELPERS ================= */
+function updatePeriodeBtnLabel() {
+  const labelEl = document.getElementById("periodeBtnLabel");
+  if (!selectedPeriode.length) {
+    labelEl.textContent = "Semua Periode";
+    return;
+  }
+  if (selectedPeriode.length === 1) {
+    labelEl.textContent = selectedPeriode[0];
+    return;
+  }
+  labelEl.textContent = `${selectedPeriode[0]} +${selectedPeriode.length - 1}`;
+}
+
+function syncHiddenSelect() {
+  // hidden select tetap ada (compat), kita set selected biar konsisten
+  const opts = Array.from(fPeriode.options);
+  opts.forEach(o => {
+    if (!o.value) return; // skip option "Semua Periode"
+    o.selected = selectedPeriode.includes(o.value);
+  });
+}
+
+function rebuildSelectedPeriodeFromChecks() {
+  const checks = Array.from(document.querySelectorAll('#periodeList input[type="checkbox"]:checked'));
+  selectedPeriode = checks.map(c => c.value);
+  updatePeriodeBtnLabel();
+  syncHiddenSelect();
 }
 
 /* ================= FILTER ================= */
@@ -267,7 +594,7 @@ function applyFilter() {
       (!fNama.value || (r.nama || "").toLowerCase().includes(fNama.value.toLowerCase())) &&
       (!fKampus.value || (r.kampus || "").toLowerCase().includes(fKampus.value.toLowerCase())) &&
       (!fKelompok.value || (r.kelompok || "").toLowerCase().includes(fKelompok.value.toLowerCase())) &&
-      (!fPeriode.value || monthLabel(r.tanggal) === fPeriode.value)
+      (selectedPeriode.length === 0 || selectedPeriode.includes(monthLabel(r.tanggal)))
     )
     // SORT A–Z by Nama
     .sort((a, b) => (a.nama || "").localeCompare((b.nama || ""), "id"));
@@ -282,7 +609,17 @@ function resetFilter() {
   fNama.value = "";
   fKampus.value = "";
   fKelompok.value = "";
+
+  // reset hidden select juga
   fPeriode.value = "";
+
+  // reset multi periode
+  selectedPeriode = [];
+  const checks = document.querySelectorAll('#periodeList input[type="checkbox"]');
+  checks.forEach(c => c.checked = false);
+  updatePeriodeBtnLabel();
+  syncHiddenSelect();
+
   applyFilter();
 
   // opsional: bersihkan query string agar kembali "normal"
@@ -329,13 +666,52 @@ async function init() {
   setupSuggest(fKampus, [...new Set(all.map(r => (r.kampus || "")).filter(Boolean))]);
   setupSuggest(fKelompok, [...new Set(all.map(r => (r.kelompok || "")).filter(Boolean))]);
 
-  [...new Set(all.map(r => monthLabel(r.tanggal)))]
+  /* ===== PERIODE SOURCE ===== */
+  const periodeArr = [...new Set(all.map(r => monthLabel(r.tanggal)))]
     .sort((a,b) => {
-      // sort periode: "Mon YYYY" naive -> keep as-is if you prefer
-      // biar konsisten, kita urutkan alfabet dulu (tetap ringan)
       return a.localeCompare(b, "id");
-    })
-    .forEach(p => fPeriode.add(new Option(p, p)));
+    });
+
+  /* ===== Populate hidden select (compat) ===== */
+  // Pastikan option default tetap ada
+  // Lalu tambahkan option periode
+  periodeArr.forEach(p => fPeriode.add(new Option(p, p)));
+
+  /* ===== Build custom checkbox list ===== */
+  const list = document.getElementById("periodeList");
+  list.innerHTML = "";
+
+  periodeArr.forEach(p => {
+    // <label> = klik di mana saja aktif
+    const label = document.createElement("label");
+    label.className = "periode-item";
+    label.innerHTML = `
+      <input type="checkbox" value="${p}">
+      <span>${p}</span>
+    `;
+    // Saat klik label, checkbox auto toggle; kita cukup sync state di change
+    const cb = label.querySelector("input");
+    cb.addEventListener("change", () => {
+      rebuildSelectedPeriodeFromChecks();
+      applyFilter();
+    });
+    list.appendChild(label);
+  });
+
+  /* ===== Buttons All / Clear ===== */
+  document.getElementById("periodeSelectAll").addEventListener("click", (e) => {
+    e.stopPropagation();
+    document.querySelectorAll('#periodeList input[type="checkbox"]').forEach(c => c.checked = true);
+    rebuildSelectedPeriodeFromChecks();
+    applyFilter();
+  });
+
+  document.getElementById("periodeClear").addEventListener("click", (e) => {
+    e.stopPropagation();
+    document.querySelectorAll('#periodeList input[type="checkbox"]').forEach(c => c.checked = false);
+    rebuildSelectedPeriodeFromChecks();
+    applyFilter();
+  });
 
   /* ================= AUTO-FILL FILTER FROM HOME ================= */
   if (_filterType && _filterValue) {
@@ -352,10 +728,32 @@ async function init() {
     }
   }
 
+  // init label periode
+  updatePeriodeBtnLabel();
+
   applyFilter();
 }
 
-fPeriode.addEventListener("change", applyFilter);
+/* ===== Dropdown open/close logic (mobile friendly) ===== */
+const periodeBtn = document.getElementById("periodeBtn");
+const periodePanel = document.getElementById("periodePanel");
+const periodeDropdown = document.getElementById("periodeDropdown");
+
+periodeBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  const isOpen = periodePanel.classList.toggle("open");
+  periodeBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+
+document.addEventListener("click", (e) => {
+  if (!periodeDropdown.contains(e.target)) {
+    periodePanel.classList.remove("open");
+    periodeBtn.setAttribute("aria-expanded", "false");
+  }
+});
+
+/* ===== NOTE: sebelumnya ada listener fPeriode change. sekarang hidden select, tidak dipakai user langsung. ===== */
+/* fPeriode.addEventListener("change", applyFilter); */
 
 init();
 </script>
