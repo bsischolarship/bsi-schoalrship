@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="assets/style.css" />
 </head>
 
-<body data-page="ganti-nomor">
+<body data-page="form" data-form-slug="ganti-nomor">
 
 <header class="topbar">
     <div class="topbar-inner">
@@ -24,44 +24,56 @@
             <a href="index.html" class="nav-link">Home</a>
             <a href="list-form.html" class="nav-link">List Form</a>
             <a href="rekap.html" class="nav-link">Rekap Aktivitas</a>
-            <a href="ganti-nomor.html" class="nav-link nav-link nav-link--active">Kendala</a>
+            <a href="ganti-nomor.html" class="nav-link nav-link--active">Kendala</a>
         </nav>
     </div>
 </header>
 
 <main class="page page--split">
-    <section class="split-left card">
-        <h1 class="card-title">Ganti Nomor Kontak</h1>
+    <section class="split-left card card--guide">
+        <div class="pill pill--blue">Informasi Penting</div>
+        <h1 class="card-title card-title--big">📱 Ganti Nomor Kontak</h1>
         <p class="card-text">
-            Jika kamu mengganti nomor WhatsApp atau email yang digunakan di program
-            BSI Scholarship, laporkan melalui form ini agar data di sistem selalu
-            terupdate.
-        </p>
-        <p class="card-text">
-            Untuk menjaga keamanan dan konsistensi, perubahan akan diverifikasi
-            menggunakan nomor induk yang sudah terdaftar.
+            Jika kamu mengganti nomor WhatsApp atau email yang digunakan dalam program
+            BSI Scholarship, laporkan melalui form ini agar data di sistem tetap akurat.
         </p>
         <ul class="list">
-            <li>Siapkan nomor induk yang benar.</li>
-            <li>Pastikan nomor WhatsApp dan email aktif.</li>
-            <li>Cek kembali sebelum submit form.</li>
+            <li>Gunakan nomor induk yang sudah terdaftar.</li>
+            <li>Pastikan nomor WhatsApp dan email baru masih aktif.</li>
+            <li>Perubahan akan diverifikasi oleh admin.</li>
+            <li>Data yang tidak valid akan ditolak.</li>
         </ul>
+        <div class="guide-placeholder">
+            <span class="guide-placeholder-label">Catatan</span>
+            <p>
+                Form ini akan mengarahkan kamu ke Google Form khusus
+                dengan mekanisme prefill seperti form lainnya.
+            </p>
+        </div>
     </section>
 
     <section class="split-right card card--form-panel">
-        <div class="alert alert--info">
-            Form ganti nomor ini juga bisa diarahkan ke Google Form terpisah
-            dengan mekanisme prefill yang sama seperti form lainnya.
+        <div class="alert alert--info" id="form-banner">
+            <strong>Perhatian.</strong>
+            <span>Pastikan nomor induk yang kamu masukkan benar sebelum melanjutkan.</span>
+            <span class="alert-month" id="alert-month"></span>
         </div>
 
-        <form class="nim-form" onsubmit="return handleChangeNumber(event)">
-            <label for="nim-change" class="nim-label">Nomor Induk</label>
+        <form class="nim-form" onsubmit="return handleFormSubmit(event)">
+            <label for="nim" class="nim-label">Masukkan Nomor Induk</label>
 
-            <!-- === INPUT + AUTOCOMPLETE === -->
+            <p class="nim-info">
+                Nomor induk dapat dilihat di portal
+                <a href="https://inspirasi.bsischolarhub.id/" target="_blank" rel="noopener">Inspirasi</a>
+                atau
+                <a href="https://prestasi.bsischolarhub.id/" target="_blank" rel="noopener">Prestasi</a>.
+            </p>
+
+            <!-- === INPUT + AUTOCOMPLETE (DISAMAKAN DENGAN FORM YANG BERHASIL) === -->
             <div class="nim-field-wrapper">
                 <input
-                    id="nim-change"
-                    name="nim-change"
+                    id="nim"
+                    name="nim"
                     type="text"
                     class="nim-input"
                     placeholder="No Induk / Nama / Kampus"
@@ -72,7 +84,8 @@
             </div>
 
             <p class="nim-hint">
-                Nomor induk dapat dilihat dari portal Inspirasi / Prestasi.
+                Format: I24xxxxx (Inspirasi) atau P24xxxxx (Prestasi).
+                Pastikan nomor induk benar.
             </p>
 
             <button type="submit" class="btn btn-primary btn-full">
@@ -80,7 +93,16 @@
             </button>
         </form>
 
-        <div id="change-number-result" class="cek-result"></div>
+        <div id="cek-result" class="cek-result"></div>
+
+        <div class="tips-box">
+            <h3 class="tips-title">Tips</h3>
+            <ul class="list">
+                <li>Gunakan data yang sama dengan portal resmi.</li>
+                <li>Pastikan email & WhatsApp aktif.</li>
+                <li>Jika terjadi kendala, hubungi admin.</li>
+            </ul>
+        </div>
     </section>
 </main>
 
